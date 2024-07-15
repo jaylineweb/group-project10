@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+html,body{height:100%;}
+body{font-family:'Roboto', sans-serif;}
+a:link,a:visited{text-decoration:none;}
+li{list-style-type:none;}
+img{max-width:100%;}
+:before,:after{content:'';}
+.wrapper,.music,.music .container,.music_col{height:100%;}
+.music_col{
+    display:flex;
+    background-color:pink;
+    -webkit-justify-content:center;
+    justify-content:center;
+}
+.music_col:after{display:table;clear:both;}
+._left{display:inline-block;position:relative;width:180px;height:100%;padding:50px 0;background-color:gold;}
+._left ._left_col{display:flex;flex-direction:column;height:100%;}
+._left ._left_col a,._left ._left_col span{display:block;}
+.log_stat{position:absolute;bottom:50px;left:0;}
+.logo img{width:110px;}
+._right{display:inline-block;width:1124px;height:100%;background-color:blue;}
+
+@media all and (min-width:1400px){
+    .music .container{max-width:1480px;}
+}
