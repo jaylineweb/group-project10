@@ -50,3 +50,17 @@ window.addEventListener('resize', () => {
     if (window.innerWidth > 760) closeMenu(); // mobile(760px) 변형 시(resizing) 사이드배너가 열린 상태로 view되는걸 방지
 });
 
+//하단 플레이버튼 
+let lyricsPlayBtn = document.querySelector('.lyrics-play')
+lyricsPlayBtn.addEventListener('click',()=>{
+    lyricsPlayBtn.classList.add('pause');
+    let icon = lyricsPlayBtn.querySelector('i');
+        if (icon.classList.contains('fa-play')) {
+            icon.classList.remove('fa-play');
+            icon.classList.add('fa-pause');
+        } else {
+            icon.classList.remove('fa-pause');
+            icon.classList.add('fa-play');
+        }
+})
+
