@@ -1,0 +1,68 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+h1 {
+    text-align: center;
+    color: #1DB954;
+}
+
+.track {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: white;
+    transition: all 0.3s ease;
+}
+
+.track:hover {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.track img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+.track-info {
+    flex-grow: 1;
+}
+
+.track-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.track-artist {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.play-button {
+    background-color: #1DB954;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+}
+
+.play-button:hover {
+    background-color: #1ED760;
+}
