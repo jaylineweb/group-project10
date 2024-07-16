@@ -60,7 +60,32 @@ img{max-width:100%;}
 .lyrics-prev,.lyrics-play,.lyrics-play,.lyrics-next{border: none;font-size: 22px;}
 .lyrics-checkbox input[type="checkbox"] {width:20px;height:20px;}
 
-
 @media all and (min-width:1400px){
     .music .container{max-width:1480px;}
+}
+@media all and (max-width:1909px){
+    ._right{height:auto;}
+    .song-list{height:calc(53% - -2px);}
+
+}
+@media all and (max-width:1456px){
+    .music .container{max-width:unset;}
+    .song-list{height:calc(52% - -4px);}
+}
+@media all and (max-width:1200px){
+    ._right{width:740px;}
+}
+@media screen and (max-width:950px){
+    .music_col,._left,._right{display:block;width:100%;height:auto;}
+    ._left ._left_col{flex-direction:row;justify-content:space-between;}
+    ._left{padding:1.5rem 0;}
+    /* ._left ._left_col{display:block;} */
+    ._left ._left_col span.log_stat{display:flex;position:static;align-items:center;}
+
+}
+@media screen and (max-width:760px){
+    #header .site-gnb{display:block;}
+    #header .site-gnb .site-gnb-list,.search{justify-content:center;}
+    .search{padding:1.25rem 0;}
+    .top-line .music_title{padding:3.3rem 0 3.3rem 0;font-size:3.25rem;text-align:center;}
 }
