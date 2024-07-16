@@ -8,17 +8,17 @@ li{list-style-type:none;}
 img{max-width:100%;}
 :before,:after{content:'';}
 .wrapper,.music,.music .container,.music_col{height:100%;}
-.music_col{display:flex;-webkit-justify-content:center;justify-content:center;background-color:#ecf0f1;}
+.music_col{display:flex;-webkit-justify-content:center;justify-content: space-around;background-color:#ecf0f1;}
 .music_col:after{display:table;clear:both;}
-._left{display:inline-block;position:relative;width:180px;height:100%;padding:50px 0;}
+._left{display:inline-block;position:relative;width: 168px;height:100%;padding: 50px 0;}
 ._left ._left_col{display:flex;flex-direction:column;height:100%;}
 ._left ._left_col a,._left ._left_col span{display:block;}
-.log_stat{position:absolute;bottom:50px;left:0;}
+.log_stat{position:absolute;bottom:50px;left: 50%;transform: translateX(-50%);}
 .logo img{width:110px;}
 ._right{display:inline-block;width:1124px;height:100%;}
 
 .music-app{height:100%;}
-.top-line{/* padding:20px 60px; */height:calc(83% - 3px);border:10px solid #f2aa3b;border-radius:10px;background-color:#535760;/* background:linear-gradient(120deg, rgba(72,75,79,1) 0%, rgba(50,63,79,1) 100%); */}
+.top-line{overflow: hidden;/* padding:20px 60px; */height:calc(83% - 3px);border:10px solid #f2aa3b;border-radius:10px;background-color:#535760;/* background:linear-gradient(120deg, rgba(72,75,79,1) 0%, rgba(50,63,79,1) 100%); */}
 .top-line p{text-align:right;}
 .top-line .music_title{padding: 6rem 0 3.3rem 7rem;font-size:73px;font-weight:600;background:linear-gradient(120deg, rgba(72,75,79,1) 0%, rgba(50,63,79,1) 100%);color:#fff;}
 
@@ -37,7 +37,7 @@ img{max-width:100%;}
 
 #contents{height:100%;}
 
-.song-list{overflow-y:scroll;height: calc(56% - 0px);background-color:#ffffff;}
+.song-list{overflow-y:scroll;height: calc(58% - 0px);background-color:#ffffff;}
 .song-list .song-item{position:relative;padding:15px 20px;background-color: #ffffff;z-index: 1;}
 .song-list .song-item.active{background-color:#e8f9e7;}
 .song-list .song-item.active:before{display:block;position:absolute;top:0;left:0;width:100%;height:100%;border: 5px solid #25bd03;z-index: -1;}
@@ -65,7 +65,7 @@ img{max-width:100%;}
 }
 @media all and (max-width:1909px){
     ._right{height:auto;}
-    .song-list{height:calc(53% - -2px);}
+    .song-list{height: calc(58% - -2px);}
 
 }
 @media all and (max-width:1456px){
