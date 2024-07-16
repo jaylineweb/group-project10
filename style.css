@@ -24,7 +24,7 @@ img{max-width:100%;}
 
 #header{}
 #header .site-gnb{display:flex;position:relative;justify-content:space-between;padding: 15px 0;}
-#header .site-gnb .site-gnb-list{display:flex;margin:0;font-size:0;/* text-align:right; */}
+#header .site-gnb .site-gnb-list{display:flex;margin:0;font-size:0;padding: 0;/* text-align:right; */}
 #header .site-gnb .site-gnb-list .gnb-item{display:inline-block;}
 #header .site-gnb .site-gnb-list .gnb-item a{display:block;padding:13px 2.25rem;font-size:17px;font-weight:600;color:#e7ab49;}
 
@@ -33,9 +33,9 @@ img{max-width:100%;}
 .search input,.search button,.search select{float:left;padding:3px 0;border:none;font-size:16px;}
 .search button{width:30px;height:30px;background-color: transparent;}
 .search input{padding-left:10px;}
-.search select{width:87px;height:30px;border: none;}
+.search select{width: auto;height:30px;border: none;}
 
-
+#contents{height:100%;}
 
 .song-list{overflow-y:scroll;height: calc(56% - 0px);background-color:#ffffff;}
 .song-list .song-item{position:relative;padding:15px 20px;background-color: #ffffff;z-index: 1;}
@@ -85,7 +85,7 @@ img{max-width:100%;}
 }
 @media screen and (max-width:760px){
     #header .site-gnb{display:block;}
-    #header .site-gnb .site-gnb-list,.search{justify-content:center;}
+    #header .site-gnb .site-gnb-list,.search{justify-content:space-between;}
     .search{padding:1.25rem 0;}
     .top-line .music_title{padding:3.3rem 0 3.3rem 0;font-size:3.25rem;text-align:center;}
 }
