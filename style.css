@@ -35,7 +35,7 @@ img{max-width:100%;}
 .search input{padding-left:10px;}
 .search select{width:auto;height:30px;border:none;}
 
-.close-btn{display:none;position:absolute;top:14px;right:14px;width:39px;height:39px;padding:0;border:none;background-color:transparent;font-size:31px;color:#fff;}
+.close-btn{display:none;position:absolute;top:14px;right:14px;width:39px;height:39px;padding:0;border:none;background-color:transparent;font-size:31px;color:#fff;z-index:2;}
 .nav-bar{display:none;width:45px;height:45px;border:none;}
 #contents{height:100%;}
 
