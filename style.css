@@ -7,7 +7,7 @@ li{list-style-type:none;}
 img{max-width:100%;}
 :before,:after{content:'';}
 .wrapper,.music,.music .container,.music_col{height:100%;}
-.music_col{display:flex;-webkit-justify-content:center;justify-content:center;background-color:#ffffff;}
+.music_col{display:flex;-webkit-justify-content:center;justify-content:center;background-color: #ecf0f1;}
 .music_col:after{display:table;clear:both;}
 ._left{display:inline-block;position:relative;width:180px;height:100%;padding:50px 0;}
 ._left ._left_col{display:flex;flex-direction:column;height:100%;}
