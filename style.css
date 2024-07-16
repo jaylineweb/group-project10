@@ -85,7 +85,7 @@ img{max-width:100%;}
 }
 @media screen and (max-width:760px){
     #header .site-gnb{display:block;}
-    #header .site-gnb .site-gnb-list,.search{justify-content:center;}
+    #header .site-gnb .site-gnb-list,.search{justify-content:space-between;}
     .search{padding:1.25rem 0;}
     .top-line .music_title{padding:3.3rem 0 3.3rem 0;font-size:3.25rem;text-align:center;}
 }
