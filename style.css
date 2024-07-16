@@ -18,7 +18,7 @@ img{max-width:100%;}
 ._right{display:inline-block;width:1124px;height:100%;}
 
 .music-app{height:100%;}
-.top-line{overflow:hidden;/* padding:20px 60px; */height:calc(83% - 3px);border:10px solid #f2aa3b;border-radius:10px;background-color:#535760;/* background:linear-gradient(120deg, rgba(72,75,79,1) 0%, rgba(50,63,79,1) 100%); */}
+.top-line{/* overflow:hidden; *//* padding:20px 60px; */height: 736px;border:10px solid #f2aa3b;border-radius:10px;background-color:#535760;/* background:linear-gradient(120deg, rgba(72,75,79,1) 0%, rgba(50,63,79,1) 100%); */}
 .top-line p{text-align:right;}
 .top-line .music_title{padding:6rem 0 3.3rem 7rem;font-size:73px;font-weight:600;background:linear-gradient(120deg, rgba(72,75,79,1) 0%, rgba(50,63,79,1) 100%);color:#fff;}
 
@@ -39,7 +39,7 @@ img{max-width:100%;}
 .nav-bar{display:none;width:45px;height:45px;border:none;}
 #contents{height:100%;}
 
-.song-list{overflow-y:scroll;height:calc(58% - 0px);background-color:#ffffff;}
+.song-list{overflow-y:scroll;height: calc(54% - -3px);background-color:#ffffff;}
 .song-list .song-item{position:relative;padding:15px 20px;background-color:#ffffff;z-index:1;}
 .song-list .song-item.active{background-color:#e8f9e7;}
 .song-list .song-item.active:before{display:block;position:absolute;top:0;left:0;width:100%;height:100%;border:5px solid #25bd03;z-index:-1;}
@@ -54,10 +54,10 @@ img{max-width:100%;}
 .song-list .song-item .song-play{border:none;background-color:transparent;color:#d15843;}
 .song-list .song-item .song-info img{object-fit:cover;}
 
-.bottom-line{height:calc(17% - -3px);padding:20px 0;border:10px solid #5ecbd0;border-radius:10px;}
+.bottom-line{height: 120px;padding: 12px 0;border:10px solid #5ecbd0;border-radius:10px;}
 .lyrics-controls {display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:space-between;justify-content:space-between;}
 .lyrics-label{}
-.lyrics-view{width:100px;height:88px;border:none;background-color:#b3b3b3;}
+.lyrics-view{width: 77px;height: 77px;border:none;background-color:#b3b3b3;}
 .lyrics-title, .lyrics-prev, .lyrics-play, .lyrics-next, .lyrics-duration {padding:5px;/* border:1px solid #000; */text-align:center;}
 .lyrics-prev,.lyrics-play,.lyrics-play,.lyrics-next{border:none;font-size:22px;}
 .lyrics-checkbox input[type="checkbox"] {width:20px;height:20px;}
@@ -87,6 +87,7 @@ img{max-width:100%;}
 }
 @media screen and (max-width:760px){
     /* #header .site-gnb{display:block;} */
+    .top-line{height:auto;}
     #header{position:fixed;top:0;right:-100%;width:300px;height:100%;padding:0 20px;background-color:#333;transition:all 0.3s ease-in;z-index:4;}
     #header.on{right:0;}
     #header .site-gnb {display:flex;flex-direction:column;padding-top:54px;}
