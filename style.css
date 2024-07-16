@@ -20,24 +20,24 @@ img{max-width:100%;}
 .music-app{height:100%;}
 .top-line{/* padding:20px 60px; */height:calc(83% - 3px);border:10px solid #f2aa3b;border-radius:10px;background-color:#535760;/* background:linear-gradient(120deg, rgba(72,75,79,1) 0%, rgba(50,63,79,1) 100%); */}
 .top-line p{text-align:right;}
-.top-line .music_title{padding:7.3rem 0 3.3rem 7rem;font-size:73px;font-weight:600;background:linear-gradient(120deg, rgba(72,75,79,1) 0%, rgba(50,63,79,1) 100%);color:#fff;}
+.top-line .music_title{padding: 6rem 0 3.3rem 7rem;font-size:73px;font-weight:600;background:linear-gradient(120deg, rgba(72,75,79,1) 0%, rgba(50,63,79,1) 100%);color:#fff;}
 
 #header{}
-#header .site-gnb{display:flex;position:relative;justify-content:space-between;}
+#header .site-gnb{display:flex;position:relative;justify-content:space-between;padding: 15px 0;}
 #header .site-gnb .site-gnb-list{display:flex;margin:0;font-size:0;/* text-align:right; */}
 #header .site-gnb .site-gnb-list .gnb-item{display:inline-block;}
 #header .site-gnb .site-gnb-list .gnb-item a{display:block;padding:13px 2.25rem;font-size:17px;font-weight:600;color:#e7ab49;}
 
-.search{display:flex;font-size:0;align-items:center;}
+.search{display:flex;padding: 0 20px;font-size:0;align-items:center;background-color: #fff;border-radius: 30px;}
 .search:after{display:table;clear:both;}
 .search input,.search button,.search select{float:left;padding:3px 0;border:none;font-size:16px;}
-.search button{width:30px;height:30px;}
+.search button{width:30px;height:30px;background-color: transparent;}
 .search input{padding-left:10px;}
-.search select{width:87px;height:30px;border:1px solid #efefef;}
+.search select{width:87px;height:30px;border: none;}
 
 
 
-.song-list{overflow-y:scroll;height:calc(57% - -2px);background-color:#ffffff;}
+.song-list{overflow-y:scroll;height: calc(56% - 0px);background-color:#ffffff;}
 .song-list .song-item{position:relative;padding:15px 20px;background-color: #ffffff;z-index: 1;}
 .song-list .song-item.active{background-color:#e8f9e7;}
 .song-list .song-item.active:before{display:block;position:absolute;top:0;left:0;width:100%;height:100%;border: 5px solid #25bd03;z-index: -1;}
