@@ -51,15 +51,18 @@ const displayAlbums = async (category) => {
     albums.forEach(album => {
         const albumElement = document.createElement('div');
         albumElement.className = 'song-item';
+        const truncatedTitle = album.name.length > 15 ? album.name.substring(0, 15) + ' ...' : album.name;
+        const truncatedArtist = album.artists.map(artist => artist.name).join(', ').length > 15 ? album.artists.map(artist => artist.name).join(', ').substring(0, 15) + ' ...' : album.artists.map(artist => artist.name).join(', ');
         albumElement.innerHTML = `
             <div class="song-info">
                 <img src="${album.images[1].url}" alt="Album Art" style="height: 75px;">
                 <div class="song-details">
-                    <div class="song-title">${album.name}</div>
-                    <div class="song-artist">${album.artists.map(artist => artist.name).join(', ')}</div>
+                    <div class="song-title">${truncatedTitle}</div>
+                    <div class="song-artist">${truncatedArtist}</div>
                 </div>
             </div>
             <div class="song-controls">
+                <div class="song-duration">${album.totalTime}</div>
                 <button class="song-play"><i class="fa-solid fa-play"></i></button>
             </div>
         `;
@@ -95,6 +98,12 @@ function addEventListenersToItem(item) {
 }
 //songItems.forEach(item => {
 //});
+
+function formatDuration(totalTime) {
+    const [minutes, seconds] = totalTime.split(':');
+    const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+    return `${minutes}:${formattedSeconds}`;
+}
 
 
 //닫기 버튼용
