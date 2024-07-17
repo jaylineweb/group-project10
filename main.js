@@ -68,24 +68,106 @@ lyricsPlayBtn.addEventListener('click',()=>{
 
 let resultArr = new Array();
 
-// 토큰 받아오는 함수, 클라이언트 크리덴셜 방식(스트리밍은 불가, 조회만 가능)
-async function getToken() {
-
-    const clientId = 'b488526ffa804a92b41f45e03760d3ff'; 
-    const clientSecret = '7cd6750d4a0a41eba283685a51292362';
-
-    const result = await fetch('https://accounts.spotify.com/api/token', {
-        method : 'POST',
-        headers : {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization' : 'Basic ' + btoa(clientId + ':' + clientSecret)
-        },
-        body : 'grant_type=client_credentials'
-    });
-
-    const data = await result.json();
-    return data.access_token;
+// OAuth 2.0 Authorization code with PKCE Law 방식
+// code Verifier
+const generateRandomString = (length) => {
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const values = crypto.getRandomValues(new Uint8Array(length));
+    return values.reduce((acc, x) => acc + possible[x % possible.length], "");
 }
+
+//64자리의 랜덤한 문자열 호출
+const codeVerifier = generateRandomString(64);
+
+//SHA256 알고리즘으로 변환
+const sha256 = async (plain) => {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(plain);
+    return window.crypto.subtle.digest('SHA-256', data);
+}
+
+const base64encode = (input) => {
+    return btoa(String.fromCharCode(...new Uint8Array(input)))
+    .replace(/=/g, '')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_');
+}
+
+const hashed = await sha256(codeVerifier);
+const codeChallenge = base64encode(hashed);
+
+const clientId = 'b488526ffa804a92b41f45e03760d3ff';
+const redirectUri = 'http://localhost:5500';
+
+// 허용 범위 추가 가능
+// doc -> concepts -> scopes
+const scope = 'streaming app-remote-control playlist-read-private';
+const authUrl = new URL("https://accounts.spotify.com/authorize")
+
+// generated in the previous step
+window.localStorage.setItem('code_verifier', codeVerifier);
+
+const params =  {
+    response_type: 'code',
+    client_id: clientId,
+    scope,
+    code_challenge_method: 'S256',
+    code_challenge: codeChallenge,
+    redirect_uri: redirectUri
+}
+
+authUrl.search = new URLSearchParams(params).toString();
+// 코드화된 url으로 리디렉션
+window.location.href = authUrl.toString();
+
+const urlParams = new URLSearchParams(window.location.search);
+let code = urlParams.get('code');
+
+// user가 승인하면 토큰을 받아서 localStorage 저장
+const getToken = async code => {
+
+    // stored in the previous step
+    let codeVerifier = localStorage.getItem('code_verifier');
+
+    const payload = {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+        client_id: clientId,
+        grant_type: 'authorization_code',
+        code,
+        redirect_uri: redirectUri,
+        code_verifier: codeVerifier,
+        }),
+    }
+
+    const body = await fetch(url, payload);
+    const response = await body.json();
+    console.log(response.access_token);
+
+    localStorage.setItem('access_token', response.access_token);
+}
+
+// 토큰 받아오는 함수, 클라이언트 크리덴셜 방식(스트리밍은 불가, 조회만 가능)
+// async function getToken() {
+
+//     const clientId = 'b488526ffa804a92b41f45e03760d3ff'; 
+//     const clientSecret = '7cd6750d4a0a41eba283685a51292362';
+
+//     const result = await fetch('https://accounts.spotify.com/api/token', {
+//         method : 'POST',
+//         headers : {
+//             'Content-Type': 'application/x-www-form-urlencoded',
+//             'Authorization' : 'Basic ' + btoa(clientId + ':' + clientSecret)
+//         },
+//         body : 'grant_type=client_credentials'
+//     });
+
+//     const data = await result.json();
+//     return data.access_token;
+// }
 
 // keyword('블랙핑크' 등)를 이용하여 검색하면
 // json(객체 배열) return
@@ -192,45 +274,10 @@ async function renderBySearch() {
 
 // SDK 컨트롤
 
-// OAuth 2.0 Authorization code 방식
-// 인증 URL 생성하고 사용자를 해당 URL로 리디렉션
-function redirectToSpotifyAuth() {
-    const clientId = 'b488526ffa804a92b41f45e03760d3ff'; 
-    const redirectUri = 'http://127.0.0.1:5500/index.html'; 
-    const scopes = [
-        'streaming',
-        'user-read-email',
-        'user-read-private'
-    ].join(' ');
-
-    const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scopes)}`;
-
-    window.location.href = authUrl;
-}
-
-function extractTokenFromHash() {
-    const hash = window.location.hash.substring(1);
-    const params = new URLSearchParams(hash);
-    const token = params.get('access_token');
-    if (token) {
-        localStorage.setItem('spotify_token', token);
-        window.location.hash = ''; // URL 해시를 지워서 토큰을 숨깁니다
-    }
-    return token;
-}
-
-
-window.onload = () => {
-    if (!localStorage.getItem('spotify_token')) {
-        redirectToSpotifyAuth();
-    } else {
-        onSpotifyWebPlaybackSDKReady(localStorage.getItem('spotify_token'));
-    }
-};
-
 
 // web playback sdk가 load되면 한 번만 호출
-window.onSpotifyWebPlaybackSDKReady = (token) => {
+window.onSpotifyWebPlaybackSDKReady = () => {
+    const token = localStorage.getItem('access_token');
     const player = new Spotify.Player({
         name: 'Web Playback SDK Quick Start Player',
         getOAuthToken: cb => { cb(token); },
@@ -265,7 +312,7 @@ window.onSpotifyWebPlaybackSDKReady = (token) => {
         }
     });
 
-    document.querySelector('.lyrics-play').onclick = () => {
-        player.togglePlay();
-    };
+    // document.querySelector('.lyrics-play').onclick = () => {
+    //     player.togglePlay();
+    // };
 }
