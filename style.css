@@ -29,12 +29,12 @@ img{max-width:100%;}
 #header .site-gnb .site-gnb-list .gnb-item a{display:block;padding:13px 2.25rem;font-size:17px;font-weight:600;color:#e7ab49;transition:background-color .3s ease-in, color .3s ease-in .2s;}
 #header .site-gnb .site-gnb-list .gnb-item a:hover{background:#ffffff7d;border-radius:4px;color:#bb780a;}
 
-.search{display:flex;padding:0 20px;font-size:0;align-items:center;background-color:#fff;border-radius:30px;}
-.search:after{display:table;clear:both;}
-.search input,.search button,.search select{float:left;padding:3px 0;border:none;font-size:16px;}
-.search button{width:30px;height:30px;background-color:transparent;}
-.search input{padding-left:10px;}
-.search select{width:auto;height:30px;border:none;}
+.search-area{display:flex;padding:0 20px;font-size:0;align-items:center;background-color:#fff;border-radius:30px;}
+.search-area:after{display:table;clear:both;}
+.search-area input,.search-area button,.search-area select{float:left;padding:3px 0;border:none;font-size:16px;}
+.search-area button{width:30px;height:30px;background-color:transparent;}
+.search-area input{padding-left:10px;}
+.search-area select{width:auto;height:30px;border:none;}
 
 .close-btn{display:none;position:absolute;top:14px;right:14px;width:39px;height:39px;padding:0;border:none;background-color:transparent;font-size:31px;color:#fff;z-index:2;}
 .nav-bar{display:none;width:45px;height:45px;border:none;}
@@ -93,10 +93,10 @@ img{max-width:100%;}
     #header.on{right:0;}
     #header .site-gnb {display:flex;flex-direction:column;padding-top:75px;}
     #header .site-gnb .site-gnb-list{flex-direction:column;}
-    #header .site-gnb .site-gnb-list,.search{justify-content:space-between;}
+    #header .site-gnb .site-gnb-list,.search-area{justify-content:space-between;}
     .nav-bar{display:block;position:absolute;top:25px;right:6px;font-size:25px;}
     .close-btn{display:block;}
-    .search{overflow:hidden;margin-top:.95rem;padding:.55rem 0;}
-    .search input{width:130px;}
+    .search-area{overflow:hidden;margin-top:.95rem;padding:.55rem 0;}
+    .search-area input{width:130px;}
     .top-line .music_title{padding:3.3rem 0 3.3rem 0;font-size:3.25rem;text-align:center;}
 }

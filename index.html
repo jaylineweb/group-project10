@@ -39,14 +39,14 @@
                                                 <a href="#n">menu3</a>
                                             </li>
                                         </ul>
-                                        <div class="search">
-                                            <select name="" id="">
-                                                <option value="제목">제목</option>
-                                                <option value="곡명">곡명</option>
-                                                <option value="곡명">곡명</option>
+                                        <div class="search-area">
+                                            <select name="" id="search-type">
+                                                <option value="track-type">곡명</option>
+                                                <option value="album-type">앨범명</option>
+                                                <option value="artist-type">아티스트</option>
                                             </select>
-                                            <input type="text">
-                                            <button><i class="fa-solid fa-magnifying-glass"></i></button>
+                                            <input class="search-input" type="text">
+                                            <button class="search-button"><i class="fa-solid fa-magnifying-glass" onclick="searchTracksByInput()"></i></button>
                                         </div>
                                     </div>
                                 </header>

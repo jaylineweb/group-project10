@@ -82,8 +82,6 @@ async function getToken() {
     });
 
     const data = await result.json();
-
-    await console.log(data.access_token);
     return data.access_token;
 }
 
@@ -109,9 +107,56 @@ async function searchItems(keyword, type) {
     })
 
     const data = await result.json();
-    console.log('total', data.tracks.total);
-    console.log('items', data.tracks.items);
-    return data.tracks.items;
+    console.log(data);
+
+    // data 객체 내부에는 'artists', 'tracks' 등 s가 추가로 붙음
+    console.log('total', data[`${type}s`].total);
+    console.log('items', data[`${type}s`].items);
+    return data[`${type}s`].items;
 }
 
-// searchItems('블랙핑크', 'track');
+
+
+async function searchTracksByInput() {
+    const selectBox = document.querySelector('#search-type');
+    const selectValue = selectBox.options[selectBox.selectedIndex].value;
+    const searchValue = document.querySelector('.search-input').value;
+
+    if (searchValue == '') {
+        console.log('검색 결과가 없습니다.');
+        return;
+    }
+
+    let type = '';
+
+    switch (selectValue) {
+        case 'track-type':
+            type = 'track';
+            break;
+        case 'album-type':
+            type = 'album';
+            break;
+        case 'artist-type':
+            type = 'artist';
+            break;
+    }
+    
+    searchItems(searchValue, type);
+}
+
+// 검색창 focus 시 엔터이벤트리스너
+const searchInput = document.querySelector('.search-input');
+
+// 엔터 계속 누르고 있으면 계속 검색되는 것을 막기 위한 bool 변수
+let isSearched = false;
+
+searchInput.addEventListener('keydown', (event) => {
+    if (event.keyCode == 13 && !isSearched) {
+        searchTracksByInput();
+        isSearched = true;
+    }
+});
+
+searchInput.addEventListener('keyup', () => {
+    isSearched = false;
+})
