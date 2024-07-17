@@ -88,7 +88,7 @@ img{max-width:100%;}
 }
 @media screen and (max-width:760px){
     /* #header .site-gnb{display:block;} */
-    .top-line{height:auto;}
+    .top-line{height:600px;}
     #header{position:fixed;top:0;right:-100%;width:300px;height:100%;padding:0 20px;background-color:#333;transition:all 0.3s ease-in;z-index:4;}
     #header.on{right:0;}
     #header .site-gnb {display:flex;flex-direction:column;padding-top:75px;}
