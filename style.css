@@ -44,7 +44,8 @@ img{max-width:100%;}
 #contents{height:100%;/* padding:0 15px; */}
 
 .buttonload{height:50px;weight:100px;background:rgba(100, 100, 100, 0.3);
-border:1px solid rgba(72, 205, 150, 0.3);border-radius:10px;color:rgba(0, 0, 0, 0.4);padding:10px 20px;font-size:16px;position:absolute;top:calc(50% - 25px);left:calc(50% - 50px);z-index:100;display:none;}
+border:1px solid rgba(72, 205, 150, 0.3);border-radius:10px;color:rgba(0, 0, 0, 0.4);
+padding:10px 20px;font-size:16px;position:absolute;top:calc(50% - 25px);left:calc(50% - 50px);z-index:100;display:none;}
 .song-list{overflow-y:scroll;height:calc(79% - -3px);padding:0 0px 0 20px;background-color:#242424;}
 .song-list .song-item{position:relative;padding:15px 20px;background-color:#ffffff;z-index:1;}
 .song-list .song-item.active{background-color:#e8f9e7;}
