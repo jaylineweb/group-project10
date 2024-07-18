@@ -1,6 +1,6 @@
 const clientId = "33ad25dafa3f42e5b3909a3a813f8532";
-const redirectUri = "e4aca5f316194d7ba7330a8da5d2af07";
-const authEndpoint = "https://group10spotify.netlify.app/dev";
+const redirectUri = "https://group10spotify.netlify.app/dev/";
+const authEndpoint = "https://accounts.spotify.com/authorize";
 const scopes = ["playlist-read-private", "playlist-read-collaborative", "user-read-playback-state", "user-modify-playback-state", "user-read-currently-playing", "streaming"];
 
 let isPlaying = false;

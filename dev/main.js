@@ -1,5 +1,3 @@
-
-
 // 모든 song-item 요소들을 선택
 /*let songItems = document.querySelectorAll('.song-item');
 
@@ -37,11 +35,11 @@ songItems.forEach(item => {
 let header = document.getElementById('header');
 let closeBtn = document.querySelector('.close-btn');
 
-const navBarActivate=()=>{
+const navBarActivate = () => {
     header.classList.add('on');
 }
 
-closeBtn.addEventListener('click',()=>{
+closeBtn.addEventListener('click', () => {
     console.log('닫기')
     header.classList.remove('on');
 });
@@ -52,16 +50,16 @@ window.addEventListener('resize', () => {
 
 //하단 플레이버튼 
 let lyricsPlayBtn = document.querySelector('.lyrics-play')
-lyricsPlayBtn.addEventListener('click',()=>{
+lyricsPlayBtn.addEventListener('click', () => {
     lyricsPlayBtn.classList.add('pause');
     let icon = lyricsPlayBtn.querySelector('i');
-        if (icon.classList.contains('fa-play')) {
-            icon.classList.remove('fa-play');
-            icon.classList.add('fa-pause');
-        } else {
-            icon.classList.remove('fa-pause');
-            icon.classList.add('fa-play');
-        }
+    if (icon.classList.contains('fa-play')) {
+        icon.classList.remove('fa-play');
+        icon.classList.add('fa-pause');
+    } else {
+        icon.classList.remove('fa-pause');
+        icon.classList.add('fa-play');
+    }
 })
 
 // gnb-item a 클릭 시 searchTracksByInput() 호출
@@ -87,7 +85,7 @@ menuBtns.forEach(item => {
 
 
 //chageMusicSelect() 기능 구현 : select박스
-function chageMusicSelect(){
+function chageMusicSelect() {
     let musicSelect = document.getElementById("selectbox");
 
     // select element에서 선택된 option의 value가 저장된다.
