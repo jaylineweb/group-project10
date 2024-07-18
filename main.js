@@ -1,7 +1,7 @@
 
 
 // 모든 song-item 요소들을 선택
-let songItems = document.querySelectorAll('.song-item');
+/*let songItems = document.querySelectorAll('.song-item');
 
 // 각 song-item에 마우스 이벤트 리스너 추가
 songItems.forEach(item => {
@@ -30,7 +30,7 @@ songItems.forEach(item => {
             icon.classList.add('fa-play');
         }
     });
-});
+});*/
 
 
 //닫기 버튼용
