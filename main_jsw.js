@@ -1,4 +1,4 @@
-const clientId = "b488526ffa804a92b41f45e03760d3ff";
+const clientId = "33ad25dafa3f42e5b3909a3a813f8532";
 const redirectUri = "https://jaylineweb.github.io/group-project10";
 const authEndpoint = "https://accounts.spotify.com/authorize";
 const scopes = ["playlist-read-private", "playlist-read-collaborative", "user-read-playback-state", "user-modify-playback-state", "user-read-currently-playing", "streaming"];
