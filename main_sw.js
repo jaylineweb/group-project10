@@ -5,10 +5,11 @@ let numberOfSearchedItems;
 let result = new Array();
 let resultHTML = '';
 
+//로딩화면
+const buttonLoad = document.querySelector('.buttonload');
 
 // 렌더링 화면 가져오기
 const songList = document.querySelector('.song-list');
-
 
 // 스크롤 이벤트리스너
 songList.addEventListener('scroll', () => {
@@ -113,6 +114,8 @@ async function searchItems(keyword, page) {
 async function searchTracksByInput() {
   scrollPage = 1;
   songList.scrollTo(0, 0);
+  buttonLoad.style.display = 'block';
+
   searchValue = document.querySelector('.search-input').value;
   document.querySelector('.search-input').value = '';
 
@@ -122,12 +125,19 @@ async function searchTracksByInput() {
   }
 
   result = await searchItems(searchValue, 1);
+
+  // "KEYWORD" 검색결과 로 music title 변경
+  const musicTitle = document.querySelector('.music_title');
+
+  musicTitle.textContent = `"${searchValue}" 검색결과`;
+
   //.song-list에 렌더링
   renderBySearch();
 }
 
 // 검색버튼 || Enter 누르면 검색
 async function renderBySearch(page = 1) {
+
     resultHTML = '';
 
   // 렌더링 할 때 필요한 정보만 추출
@@ -164,7 +174,9 @@ async function renderBySearch(page = 1) {
   });
 
   songList.innerHTML = resultHTML;
+
   isLoading = false;
+  buttonLoad.style.display = 'none';
 
   // 스크롤 후 데이터 수신 시 이벤트 리스너 추가
   addEventListenersToSongs();
@@ -175,10 +187,16 @@ async function renderBySearch(page = 1) {
 // 무한 스크롤 다음페이지 렌더링
 async function renderNextPage(page) {
   isLoading = true;
+  buttonLoad.style.display = 'block';
+
   const newItems = await searchItems(searchValue, page);
+
   if (!newItems) {
+    buttonLoad.innerText = '마지막 검색 결과입니다.';
+    setTimeout(() => {buttonLoad.style.display = 'none';}, 1200);
     return;
   }
+
   result = result.concat(newItems);
   console.log("result", result);
   renderBySearch(page);
