@@ -193,7 +193,10 @@ async function renderNextPage(page) {
 
   if (!newItems) {
     buttonLoad.innerText = '마지막 검색 결과입니다.';
-    setTimeout(() => {buttonLoad.style.display = 'none';}, 1200);
+    setTimeout(() => {
+      buttonLoad.style.display = 'none';
+      buttonLoad.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Loading';
+      }, 1200);
     return;
   }
 
