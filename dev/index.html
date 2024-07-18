@@ -1,4 +1,4 @@
-9<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 
 <head>
@@ -7,7 +7,6 @@
   <title>spotify music page</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
   <link rel="stylesheet" href="style.css" />
   <script src="https://kit.fontawesome.com/250db844ad.js" crossorigin="anonymous"></script>
   <script defer src="./main.js"></script>
@@ -16,7 +15,6 @@
 </head>
 
 <body>
- 
   <div class="wrapper">
     <div class="music">
       <div class="container">
@@ -44,118 +42,30 @@
                   <button class="close-btn"><i class="fa-solid fa-circle-xmark"></i></button>
                   <div class="site-gnb">
                     <ul class="site-gnb-list">
-                        <li class="gnb-item">
-                            <a href="#n">TOP 50</a>
-                        </li>
-                        <li class="gnb-item">
-                            <a href="#n">New Release</a>
-                        </li>
-                        <li class="gnb-item">
-                            <div class="dropdown">
-                                <button
-                                    class="btn btn-secondary dropdown-toggle"
-                                    type="button"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                >
-                                    Artist
-                                </button>
-                                <ul
-                                    class="dropdown-menu dropdown-menu-dark"
-                                >
-                                    <li>
-                                        <button
-                                            class="dropdown-item"
-                                            type="button"
-                                        >
-                                            Blackpink
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button
-                                            class="dropdown-item"
-                                            type="button"
-                                        >
-                                            NewJeans
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button
-                                            class="dropdown-item"
-                                            type="button"
-                                        >
-                                            Aespa
-                                        </button>
-                                    </li><li>
-                                        <button
-                                            class="dropdown-item"
-                                            type="button"
-                                        >
-                                            GOLDEN
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="gnb-item">
-                            <div class="dropdown">
-                                <button
-                                    class="btn btn-secondary dropdown-toggle"
-                                    type="button"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                >
-                                    Genre
-                                </button>
-                                <ul
-                                    class="dropdown-menu  dropdown-menu-dark"
-                                >
-                                    <li>
-                                        <button
-                                            class="dropdown-item"
-                                            type="button"
-                                        >
-                                            Pop
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button
-                                            class="dropdown-item"
-                                            type="button"
-                                        >
-                                            Ballad
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button
-                                            class="dropdown-item"
-                                            type="button"
-                                        >
-                                            Rock
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                      <li class="gnb-item">
+                        <a href="#n">blackpink</a>
+                      </li>
+                      <li class="gnb-item">
+                        <a href="#n">NewJeans</a>
+                      </li>
+                      <li class="gnb-item">
+                        <a href="#n">aespa</a>
+                      </li>
+                      <li class="gnb-item">
+                        <a href="#n">GOLDEN</a>
+                      </li>
                     </ul>
                     <div class="search">
-                        <select
-                        name=""
-                        id="search-option"
-                    >
-                        <option value="track">
-                            곡명
-                        </option>
-                        <option value="album">
-                            앨범명
-                        </option>
-                        <option value="artist">
-                            아티스트
-                        </option>
-                        <option value="track">
-                            장르
-                        </option>
-                    </select>
+                      <select name="selectbox" id="selectbox" onchange="chageMusicSelect()">
+                        <option value="제목">제목</option>
+                        <option value="blackpink">blackpink</option>
+                        <option value="NewJeans">NewJeans</option>
+                        <option value="aespa">aespa</option>
+                        <option value="ILLIT">ILLIT</option>
+                        <option value="GOLDEN">GOLDEN</option>
+                        <option value="Warmth">Warmth</option>
+                        <option value="FACE">FACE</option>
+                      </select>
                       <input class="search-input" type="text" />
                       <button class="search-button" onclick="searchTracksByInput()"><i
                           class="fa-solid fa-magnifying-glass"></i></button>
@@ -163,7 +73,7 @@
                   </div>
                 </header>
                 <main id="contents">
-                  <h2 class="music_title">TOP 50</h2>
+                  <h2 class="music_title">Top 50</h2>
                   <div class="song-list" id="song-list">
                     <!-- 플레이리스트 렌더링 -->
                   </div>
@@ -190,7 +100,6 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
-
 </body>
 
 </html>

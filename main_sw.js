@@ -99,8 +99,10 @@ searchInput.addEventListener('keyup', () => {
 // 토큰 받아오는 함수, 클라이언트 크리덴셜 방식(스트리밍은 불가, 조회만 가능)
 async function getToken() {
 
-    const clientId = 'b488526ffa804a92b41f45e03760d3ff'; 
-    const clientSecret = '7cd6750d4a0a41eba283685a51292362';
+    //const clientId = 'b488526ffa804a92b41f45e03760d3ff'; 기존 값 
+    const clientId = '33ad25dafa3f42e5b3909a3a813f8532';
+    //const clientSecret = '7cd6750d4a0a41eba283685a51292362'; 기존 값
+    const clientSecret = '3a92a4a9a6724d5ea179d7553b0f4a59';
 
     const result = await fetch('https://accounts.spotify.com/api/token', {
         method : 'POST',
