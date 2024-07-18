@@ -133,8 +133,14 @@ const fetchPlaylists = async (token) => {
         Authorization: `Bearer ${token}`,
       },
     });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
     const data = await response.json();
     console.log("Playlists:", data);
+    console.log("playlistId:", data.items[0].id)
     if (data.items.length > 0) {
       fetchTracks(token, data.items[0].id);
     }
@@ -155,6 +161,11 @@ const fetchTracks = async (token, playlistId) => {
         Authorization: `Bearer ${token}`,
       },
     });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
     const data = await response.json();
     console.log("Tracks:", data);
     tracksList = data.items; // 현재 재생 목록 저장
@@ -392,6 +403,11 @@ const getCurrentPlayingTrack = async (token) => {
         Authorization: `Bearer ${token}`,
       },
     });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
     const data = await response.json();
     console.log("Currently playing:", data);
     if (data && data.item) {
