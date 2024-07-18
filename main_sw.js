@@ -1,8 +1,10 @@
 let scrollPage = 1;
+let isLoading = false;
+let searchValue;
 let numberOfSearchedItems;
 let result = new Array();
 let resultHTML = '';
-let isLoading = false;
+
 
 // 렌더링 화면 가져오기
 const songList = document.querySelector('.song-list');
@@ -19,6 +21,34 @@ songList.addEventListener('scroll', () => {
       renderNextPage(scrollPage);
     }
   }
+})
+
+
+// 검색 카테고리 선택 시 selectedValue의 값 변경
+const selectElement = document.querySelector('#search-option');
+
+let selectedValue = 'track';
+
+selectElement.addEventListener('change', (event) => {
+  selectedValue = event.target.value;
+  console.log('selected:', selectedValue);
+})
+
+
+// 검색창 focus 시 엔터이벤트리스너
+const searchInput = document.querySelector('.search-input');
+
+// 엔터 계속 누르고 있으면 계속 검색되는 것을 막기 위한 bool 변수
+let isSearched = false;
+
+searchInput.addEventListener('keydown', (event) => {
+    if (event.keyCode == 13 && !isSearched) {
+        searchTracksByInput();
+        isSearched = true;
+    }
+});
+searchInput.addEventListener('keyup', () => {
+  isSearched = false;
 })
 
 
@@ -60,7 +90,7 @@ async function searchItems(keyword, page) {
   }
 
   // include_external 옵션 : 클라이언트에서 노래 재생 가능
-  let searchURL = new URL(`https://api.spotify.com/v1/search?q=${keyword}&market=KR&limit=${limit}&offset=${offset}&type=track&include_external=audio`);
+  let searchURL = new URL(`https://api.spotify.com/v1/search?q=${keyword}&market=KR&limit=${limit}&offset=${offset}&type=${selectedValue}&include_external=audio`);
 
 
   const result = await fetch(searchURL, {
@@ -71,16 +101,13 @@ async function searchItems(keyword, page) {
   const data = await result.json();
   console.log("searchItems", data);
 
-  numberOfSearchedItems = data.tracks.total;
+  numberOfSearchedItems = data[`${selectedValue}s`].total;
 
-  console.log('total', data.tracks.total);
-  console.log('items', data.tracks.items);
-  return data.tracks.items;
+  console.log('total', data[`${selectedValue}s`].total);
+  console.log('items', data[`${selectedValue}s`].items);
+  return data[`${selectedValue}s`].items;
 }
 
-
-
-let searchValue;
 
 // 검색창에 입력한 값 받아서 배열로 변환
 async function searchTracksByInput() {
@@ -90,7 +117,7 @@ async function searchTracksByInput() {
   document.querySelector('.search-input').value = '';
 
   if (searchValue == '') {
-      console.log('검색 결과가 없습니다.');
+      alert('검색어를 입력해주세요.');
       return;
   }
 
@@ -99,39 +126,23 @@ async function searchTracksByInput() {
   renderBySearch();
 }
 
-
-// 검색창 focus 시 엔터이벤트리스너
-const searchInput = document.querySelector('.search-input');
-
-// 엔터 계속 누르고 있으면 계속 검색되는 것을 막기 위한 bool 변수
-let isSearched = false;
-
-searchInput.addEventListener('keydown', (event) => {
-    if (event.keyCode == 13 && !isSearched) {
-        searchTracksByInput();
-        isSearched = true;
-    }
-});
-searchInput.addEventListener('keyup', () => {
-  isSearched = false;
-})
-
+// 검색버튼 || Enter 누르면 검색
 async function renderBySearch(page = 1) {
     resultHTML = '';
 
   // 렌더링 할 때 필요한 정보만 추출
   const resultInfo = result.map((item, i) => {
-      const durationInMinutes = Math.floor((Number(item.duration_ms) / 1000) / 60);
+      const durationInMinutes = Math.floor((Number(item.duration_ms) / 1000) / 60)
       const durationInSeconds = Math.floor((Number(item.duration_ms) / 1000) % 60);
   
       // 두 자리수 형태로 맞추기
       const formattedSeconds = durationInSeconds < 10 ? `0${durationInSeconds}` : durationInSeconds;
   
       return {
-          albumJacketUrl: item.album.images[1].url,
-          songName: item.name,
-          artist: item.artists[0].name,
-          totalTime: `${durationInMinutes}:${formattedSeconds}`
+          picture: `${selectedValue == 'track' ? item.album.images[1].url : item.images[1].url}`,
+          firstLine: item.name,
+          secondLine: `${selectedValue == 'artist' ? item.genres[0] : item.artists[0].name}`,
+          totalTime: `${selectedValue == 'track' ? durationInMinutes + ':' + formattedSeconds : ''}`
       };
   });
   
@@ -139,10 +150,10 @@ async function renderBySearch(page = 1) {
   resultInfo.forEach((item, i) => {
       resultHTML += `<div class="song-item">
                           <div class="song-info">
-                              <img src="${item.albumJacketUrl}" alt="Album Art" width="75">
+                              <img src="${item.picture}" alt="Album Art" width="75">
                               <div class="song-details">
-                                  <div class="song-title">${item.songName.length > 15 ? item.songName.substring(0, 15) + ' ...' : item.songName}</div>
-                                  <div class="song-artist">${item.artist.length > 15 ? item.artist.substring(0, 15) + ' ...' : item.artist}</div>
+                                  <div class="song-title">${item.firstLine.length > 15 ? item.firstLine.substring(0, 15) + ' ...' : item.firstLine}</div>
+                                  <div class="song-artist">${item.secondLine.length > 15 ? item.secondLine.substring(0, 15) + ' ...' : item.secondLine}</div>
                               </div>
                           </div>
                           <div class="song-controls">
@@ -172,6 +183,8 @@ async function renderNextPage(page) {
   console.log("result", result);
   renderBySearch(page);
 }
+
+
 
 // 모든 song-item 요소들에 마우스 이벤트 리스너 추가
 function addEventListenersToSongs() {
