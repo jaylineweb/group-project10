@@ -64,3 +64,38 @@ lyricsPlayBtn.addEventListener('click',()=>{
         }
 })
 
+// gnb-item a 클릭 시 searchTracksByInput() 호출
+let menuBtns = document.querySelectorAll('.gnb-item a');
+menuBtns.forEach(item => {
+    item.addEventListener('click', async (event) => {
+        event.preventDefault(); // 기본 동작 막기
+
+        searchValue = item.textContent.trim().toLowerCase();; // 링크 텍스트를 검색어로 설정(소문자)
+
+        if (searchValue === '') {
+            alert('검색어를 입력해주세요.');
+            return;
+        }
+
+        // 검색 및 렌더링
+        result = await searchItems(searchValue, 1);
+
+        console.log(event.target.textContent); // 클릭시 텍스트 값 확인용
+        renderBySearch(); // 검색 결과 렌더링
+    });
+});
+
+
+//chageMusicSelect() 기능 구현 : select박스
+function chageMusicSelect(){
+    let musicSelect = document.getElementById("selectbox");
+
+    // select element에서 선택된 option의 value가 저장된다.
+    let selectedValue = musicSelect.options[musicSelect.selectedIndex].value;
+
+    let inputElement = document.querySelector('.search-input');
+    inputElement.value = selectedValue;
+
+    // input 요소의 value 값을 출력 (콘솔에 출력)
+    console.log('Input value:', inputElement.value);
+}

@@ -15,6 +15,8 @@ img{max-width:100%;}
 ._left ._left_col a,._left ._left_col span{display:block;}
 .log_stat{position:absolute;bottom:50px;left:50%;color:#ffffff;transform:translateX(-50%);}
 .logo img{width:110px;}
+.log_stat a{padding:10px 30px;background-color:#ffffff;border-radius:34px;font-size:16px;font-weight:800;color:#121212;transition:color 0.3s ease-in;}
+.log_stat a:hover{color:#1ed760;}
 ._right{display:inline-block;width:1124px;height:100%;}
 
 .music-app{position:relative;height:100%;/* background:#7b8bb0bd; */background:linear-gradient(#736e6e 0, rgba(0, 0, 0, .5) 100%);/* padding:0 16px; */box-sizing:border-box;/* border-left:1px solid #ffffff; */}
