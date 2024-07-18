@@ -64,3 +64,12 @@ lyricsPlayBtn.addEventListener('click',()=>{
         }
 })
 
+// gnb-item a 클릭 시 searchTracksByInput() 호출
+let menuBtns = document.querySelectorAll('.gnb-item a');
+menuBtns.forEach(item => {
+    item.addEventListener('click', (event) => {
+        event.preventDefault(); // 기본 동작 막기
+        searchValue = item.textContent; // 링크 텍스트를 검색어로 설정
+        searchTracksByInput(); // 검색 함수 호출
+    });
+});
