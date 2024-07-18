@@ -4,6 +4,49 @@ let searchValue;
 let numberOfSearchedItems;
 let result = new Array();
 let resultHTML = '';
+let isMainScreen = true;
+
+//2.5초마다 메인화면 lp판 돌리기
+document.addEventListener('DOMContentLoaded', (event) => {
+  const lpBoard = document.querySelector('.lp-board');
+  const albumJacket1 = document.querySelector('.album-jacket1');
+
+  let jacketUrlList = [
+    './img/bp_jk.webp', './img/bp2_jk.webp',
+    './img/bts_jk.webp', './img/bts2_jk.webp',
+    './img/d6_jk.webp', './img/d62_jk.webp',
+    './img/nm_jk.webp', './img/nm2_jk.webp',
+    './img/svt_jk.webp', './img/svt2_jk.webp',
+    './img/tws_jk.webp', './img/tws2_jk.webp'
+  ]
+
+  let currentIndex = 0;
+
+  function changeAlbumJacket() {
+    currentIndex = (currentIndex + 1) % jacketUrlList.length;
+    albumJacket1.style.background = `url(${jacketUrlList[currentIndex]}) no-repeat center / cover`;
+  }
+
+  setInterval(changeAlbumJacket, 2500);
+
+  animationContent = 'rotateLP 5s linear infinite';
+  lpBoard.style.animation = animationContent;
+
+  //초기 이미지 세팅
+  albumJacket1.style.background = `url(${jacketUrlList[currentIndex]}) no-repeat center / cover`;
+})
+
+//로고 클릭 시 메인화면으로 전환
+const mainLogo = document.querySelector('.logo');
+mainLogo.addEventListener('click', () => {
+  const mainAnimation = document.querySelector('.main-animation');
+  const musicTitle = document.querySelector('.music_title');
+  const songList = document.querySelector('.song-list');
+
+  mainAnimation.style.display = 'flex';
+  musicTitle.style.display = 'none';
+  songList.style.display = 'none';
+})
 
 //로딩화면
 const buttonLoad = document.querySelector('.buttonload');
@@ -155,6 +198,7 @@ async function renderBySearch(page = 1) {
           totalTime: `${selectedValue == 'track' ? durationInMinutes + ':' + formattedSeconds : ''}`
       };
   });
+
   
   // 각각의 item 렌더링
   resultInfo.forEach((item, i) => {
@@ -173,7 +217,15 @@ async function renderBySearch(page = 1) {
                       </div>`;
   });
 
+  const musicTitle = document.querySelector('.music_title');
+  const mainAnimation = document.querySelector('.main-animation');
+
+  mainAnimation.style.display = 'none';
+  musicTitle.style.display = 'block';
+  songList.style.display = 'block';
   songList.innerHTML = resultHTML;
+
+  songList.scrollTo(0, 0);
 
   isLoading = false;
   buttonLoad.style.display = 'none';
