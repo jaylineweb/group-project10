@@ -1,10 +1,7 @@
 // 주상우 : SDK Control
-// const clientId = "e4aca5f316194d7ba7330a8da5d2af07";
-// const clientSecret = "b8a4d84b134942488e744e87a54111c6";
-// const redirectUri = "https://group-project-10.netlify.app";
 const clientId = "e4aca5f316194d7ba7330a8da5d2af07";
 const clientSecret = "b8a4d84b134942488e744e87a54111c6";
-const redirectUri = "https://splendorous-mandazi-ce7dbe.netlify.app/javascript/spotify";
+const redirectUri = "https://group-project-10.netlify.app";
 const authEndpoint = "https://accounts.spotify.com/authorize";
 const scopes = ["playlist-read-private", "playlist-read-collaborative", "user-read-playback-state", "user-modify-playback-state", "user-read-currently-playing", "streaming"];
 
@@ -518,12 +515,13 @@ async function searchItems(keyword, page) {
   let limit = 10;
   let offset = (page - 1) * 10;
   console.log("offset", offset);
+  let searchType = selectedValue;
 
   if (numberOfSearchedItems < offset) {
     return;
   }
 
-  let searchURL = new URL(`https://api.spotify.com/v1/search?q=${keyword}&market=KR&limit=${limit}&offset=${offset}&type=track&include_external=audio`);
+  let searchURL = new URL(`https://api.spotify.com/v1/search?q=${keyword}&market=KR&limit=${limit}&offset=${offset}&type=${searchType}&include_external=audio`);
 
   const result = await fetch(searchURL, {
     method: "GET",
@@ -533,11 +531,11 @@ async function searchItems(keyword, page) {
   const data = await result.json();
   console.log("searchItems", data);
 
-  numberOfSearchedItems = data.tracks.total;
+  numberOfSearchedItems = data[`${searchType}s`].total;
 
-  console.log("total", data.tracks.total);
-  console.log("items", data.tracks.items);
-  return data.tracks.items;
+  console.log("total", data[`${searchType}s`].total);
+  console.log("items", data[`${searchType}s`].items);
+  return data[`${searchType}s`].items;
 }
 
 let searchValue;
@@ -591,11 +589,11 @@ async function renderBySearch(page = 1) {
     const formattedSeconds = durationInSeconds < 10 ? `0${durationInSeconds}` : durationInSeconds;
 
     return {
-      albumJacketUrl: item.album.images[1].url,
+      albumJacketUrl: `${selectedValue == 'track' ? item.album.images[1].url : item.images[1].url}`,
       songName: item.name,
-      artist: item.artists[0].name,
-      totalTime: `${durationInMinutes}:${formattedSeconds}`,
-      uri: item.uri,
+      artist: `${selectedValue == 'artist' ? item.genres[0] : item.artists[0].name}`,
+      totalTime: `${selectedValue == 'track' ? durationInMinutes + ":" + formattedSeconds : ''}`,
+      uri: `${ selectedValue == 'track' ? item.uri : ''}`,
     };
   });
 
