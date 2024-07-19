@@ -1,3 +1,5 @@
+//netlify 테스트
+
 document.addEventListener('DOMContentLoaded', () => {
     // 메뉴 항목 선택
     const menus = document.querySelectorAll('#header .site-gnb .site-gnb-list .gnb-item a');
@@ -128,3 +130,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
