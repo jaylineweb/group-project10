@@ -640,7 +640,7 @@ async function renderBySearch(page = 1) {
                               </div>
                           </div>
                           <div class="song-controls">
-                              <button class="view-details" onclick="getRelatedSongs()">상세 검색</button>
+                              <button class="view-details" onclick="getRelatedSongs()"><i class="fa-solid fa-magnifying-glass"><span class="skip">상세 검색</span></i></button>
                           </div>
                       </div>`;
     }
