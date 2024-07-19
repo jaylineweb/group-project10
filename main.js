@@ -67,7 +67,7 @@ menuBtns.forEach((item) => {
 
 //chageMusicSelect() 기능 구현 : select박스
 function chageMusicSelect() {
-  let musicSelect = document.getElementById("search-option");
+  let musicSelect = document.getElementById("selectbox");
 
   // select element에서 선택된 option의 value가 저장된다.
   let selectedValue = musicSelect.options[musicSelect.selectedIndex].value;
