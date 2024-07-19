@@ -1,7 +1,10 @@
 // 주상우 : SDK Control
+// const clientId = "e4aca5f316194d7ba7330a8da5d2af07";
+// const clientSecret = "b8a4d84b134942488e744e87a54111c6";
+// const redirectUri = "https://group-project-10.netlify.app";
 const clientId = "e4aca5f316194d7ba7330a8da5d2af07";
 const clientSecret = "b8a4d84b134942488e744e87a54111c6";
-const redirectUri = "https://group-project-10.netlify.app";
+const redirectUri = "https://splendorous-mandazi-ce7dbe.netlify.app/javascript/spotify";
 const authEndpoint = "https://accounts.spotify.com/authorize";
 const scopes = ["playlist-read-private", "playlist-read-collaborative", "user-read-playback-state", "user-modify-playback-state", "user-read-currently-playing", "streaming"];
 
@@ -710,4 +713,3 @@ function addEventListenersToSongs() {
     }
   });
 }
-
