@@ -1,6 +1,7 @@
-const clientId = "33ad25dafa3f42e5b3909a3a813f8532";
-const clientSecret = "3a92a4a9a6724d5ea179d7553b0f4a59";
-const redirectUri = "https://group10spotify.netlify.app";
+// 주상우 : SDK Control
+const clientId = "e4aca5f316194d7ba7330a8da5d2af07";
+const clientSecret = "b8a4d84b134942488e744e87a54111c6";
+const redirectUri = "https://group-project-10.netlify.app";
 const authEndpoint = "https://accounts.spotify.com/authorize";
 const scopes = ["playlist-read-private", "playlist-read-collaborative", "user-read-playback-state", "user-modify-playback-state", "user-read-currently-playing", "streaming"];
 
@@ -10,62 +11,6 @@ let currentTrackIndex = -1;
 let player;
 let deviceId;
 let tracksList = [];
-let scrollPage = 1;
-let numberOfSearchedItems;
-let result = [];
-let resultHTML = "";
-let isLoading = false;
-
-//2.5초마다 메인화면 lp판 돌리기
-document.addEventListener("DOMContentLoaded", (event) => {
-  const lpBoard = document.querySelector(".lp-board");
-  const albumJacket1 = document.querySelector(".album-jacket1");
-
-  let jacketUrlList = [
-    "./img/bp_jk.webp",
-    "./img/bp2_jk.webp",
-    "./img/bts_jk.webp",
-    "./img/bts2_jk.webp",
-    "./img/d6_jk.webp",
-    "./img/d62_jk.webp",
-    "./img/nm_jk.webp",
-    "./img/nm2_jk.webp",
-    "./img/svt_jk.webp",
-    "./img/svt2_jk.webp",
-    "./img/tws_jk.webp",
-    "./img/tws2_jk.webp",
-  ];
-
-  let currentIndex = 0;
-
-  function changeAlbumJacket() {
-    currentIndex = (currentIndex + 1) % jacketUrlList.length;
-    albumJacket1.style.background = `url(${jacketUrlList[currentIndex]}) no-repeat center / cover`;
-  }
-
-  setInterval(changeAlbumJacket, 2500);
-
-  let animationContent = "rotateLP 5s linear infinite";
-  lpBoard.style.animation = animationContent;
-
-  //초기 이미지 세팅
-  albumJacket1.style.background = `url(${jacketUrlList[currentIndex]}) no-repeat center / cover`;
-});
-
-//로고 클릭 시 메인화면으로 전환
-const mainLogo = document.querySelector(".logo");
-mainLogo.addEventListener("click", () => {
-  const mainAnimation = document.querySelector(".main-animation");
-  const musicTitle = document.querySelector(".music_title");
-  const songList = document.querySelector(".song-list");
-
-  mainAnimation.style.display = "none";
-  musicTitle.style.display = "block";
-  songList.style.display = "block";
-});
-
-// 렌더링 화면 가져오기
-const songList = document.querySelector(".song-list");
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM fully loaded and parsed");
@@ -438,21 +383,113 @@ const playPreviousTrack = (token) => {
 };
 
 /**
- * 검색 및 무한 스크롤 기능
+ * Preview URL을 사용하여 트랙 재생
+ * @param {string} previewUrl - Spotify 트랙의 미리보기 URL
  */
+const playPreview = (previewUrl) => {
+  const audio = new Audio(previewUrl);
+  audio.play();
+};
+
+
+// 박승원 : UI Control
+let scrollPage = 1;
+let isLoading = false;
+let numberOfSearchedItems;
+let result = new Array();
+let resultHTML = '';
+let isMainScreen = true;
+
+let resultInfo_Name;
+
+//2.5초마다 메인화면 lp판 돌리기
+document.addEventListener('DOMContentLoaded', (event) => {
+  const lpBoard = document.querySelector('.lp-board');
+  const albumJacket1 = document.querySelector('.album-jacket1');
+
+  let jacketUrlList = [
+    './img/bp_jk.webp', './img/bp2_jk.webp',
+    './img/bts_jk.webp', './img/bts2_jk.webp',
+    './img/d6_jk.webp', './img/d62_jk.webp',
+    './img/nm_jk.webp', './img/nm2_jk.webp',
+    './img/svt_jk.webp', './img/svt2_jk.webp',
+    './img/tws_jk.webp', './img/tws2_jk.webp'
+  ]
+
+  let currentIndex = 0;
+
+  function changeAlbumJacket() {
+    currentIndex = (currentIndex + 1) % jacketUrlList.length;
+    albumJacket1.style.background = `url(${jacketUrlList[currentIndex]}) no-repeat center / cover`;
+  }
+
+  setInterval(changeAlbumJacket, 2500);
+
+  animationContent = 'rotateLP 5s linear infinite';
+  lpBoard.style.animation = animationContent;
+
+  //초기 이미지 세팅
+  albumJacket1.style.background = `url(${jacketUrlList[currentIndex]}) no-repeat center / cover`;
+})
+
+//로고 클릭 시 메인화면으로 전환
+const mainLogo = document.querySelector('.logo');
+mainLogo.addEventListener('click', () => {
+  const mainAnimation = document.querySelector('.main-animation');
+  const musicTitle = document.querySelector('.music_title');
+  const songList = document.querySelector('.song-list');
+
+  mainAnimation.style.display = 'flex';
+  musicTitle.style.display = 'none';
+  songList.style.display = 'none';
+})
+
+//로딩화면
+const buttonLoad = document.querySelector('.buttonload');
+
+// 렌더링 화면 가져오기
+const songList = document.querySelector('.song-list');
 
 // 스크롤 이벤트리스너
-songList.addEventListener("scroll", () => {
+songList.addEventListener('scroll', () => {
   const scrollPos = songList.clientHeight + songList.scrollTop;
   const totalHeight = songList.scrollHeight;
-
-  if (scrollPos >= totalHeight * 0.9) {
+  
+  if (scrollPos >= (totalHeight * 0.9)) {
     if (!isLoading) {
       scrollPage++;
       renderNextPage(scrollPage);
     }
   }
+})
+
+
+// 검색 카테고리 선택 시 selectedValue의 값 변경
+const selectElement = document.querySelector('#search-option');
+
+let selectedValue = 'track';
+
+selectElement.addEventListener('change', (event) => {
+  selectedValue = event.target.value;
+  console.log('selected:', selectedValue);
+})
+
+
+// 검색창 focus 시 엔터이벤트리스너
+const searchInput = document.querySelector('.search-input');
+
+// 엔터 계속 누르고 있으면 계속 검색되는 것을 막기 위한 bool 변수
+let isSearched = false;
+
+searchInput.addEventListener('keydown', (event) => {
+    if (event.keyCode == 13 && !isSearched) {
+        searchTracksByInput();
+        isSearched = true;
+    }
 });
+searchInput.addEventListener('keyup', () => {
+  isSearched = false;
+})
 
 // 토큰 받아오는 함수, 클라이언트 크리덴셜 방식(스트리밍은 불가, 조회만 가능)
 async function getToken() {
@@ -505,29 +542,32 @@ let searchValue;
 // 검색창에 입력한 값 받아서 배열로 변환
 async function searchTracksByInput() {
   scrollPage = 1;
-  songList.scrollTo(0, 0);
+
   searchValue = document.querySelector(".search-input").value;
   document.querySelector(".search-input").value = "";
 
   if (searchValue == "") {
-    console.log("검색 결과가 없습니다.");
+    alert("검색어를 입력해 주세요.");
     return;
   }
+
+  songList.scrollTo(0, 0);
+  buttonLoad.style.display = 'block';
 
   result = await searchItems(searchValue, 1);
   tracksList = result.map((item) => ({
     uri: item.uri,
     track: item,
   }));
+
+  // "KEYWORD" 검색결과 로 music title 변경
+  const musicTitle = document.querySelector('.music_title');
+
+  musicTitle.textContent = `"${searchValue}" 검색결과`;
+
   //.song-list에 렌더링
   renderBySearch();
 }
-
-// 검색창 focus 시 엔터이벤트리스너
-const searchInput = document.querySelector(".search-input");
-
-// 엔터 계속 누르고 있으면 계속 검색되는 것을 막기 위한 bool 변수
-let isSearched = false;
 
 searchInput.addEventListener("keydown", (event) => {
   if (event.keyCode == 13 && !isSearched) {
@@ -556,24 +596,50 @@ async function renderBySearch(page = 1) {
     };
   });
 
+  // 각각의 item 렌더링
   resultInfo.forEach((item, i) => {
-    resultHTML += `<div class="song-item" data-uri="${item.uri}">
-                      <div class="song-info">
-                          <img src="${item.albumJacketUrl}" alt="Album Art" width="75">
-                          <div class="song-details">
-                              <div class="song-title">${item.songName.length > 15 ? item.songName.substring(0, 15) + " ..." : item.songName}</div>
-                              <div class="song-artist">${item.artist.length > 15 ? item.artist.substring(0, 15) + " ..." : item.artist}</div>
+    if (selectedValue == 'track') {
+      resultHTML += `<div class="song-item">
+                          <div class="song-info">
+                              <img src="${item.albumJacketUrl}" alt="Album Art" width="75">
+                              <div class="song-details">
+                                  <div class="song-title">${item.songName.length > 15 ? item.songName.substring(0, 15) + ' ...' : item.songName}</div>
+                                  <div class="song-artist">${item.artist.length > 15 ? item.artist.substring(0, 15) + ' ...' : item.artist}</div>
+                              </div>
                           </div>
-                      </div>
-                      <div class="song-controls">
-                          <div class="song-duration">${item.totalTime}</div>
-                          <button class="song-play"><i class="fa-solid fa-play"></i></button>
-                      </div>
-                  </div>`;
+                          <div class="song-controls">
+                              <div class="song-duration">${item.totalTime}</div>
+                              <button class="song-play"><i class="fa-solid fa-play"></i></button>
+                          </div>
+                      </div>`;
+    } else {
+      resultHTML += `<div class="song-item">
+                          <div class="song-info">
+                              <img src="${item.albumJacketUrl}" alt="Album Art" width="75">
+                              <div class="song-details">
+                                  <div class="song-title">${item.songName.length > 15 ? item.songName.substring(0, 15) + ' ...' : item.songName}</div>
+                                  <div class="song-artist">${item.artist.length > 15 ? item.artist.substring(0, 15) + ' ...' : item.artist}</div>
+                              </div>
+                          </div>
+                          <div class="song-controls">
+                              <button class="view-details" onclick="getRelatedSongs()">상세 검색</button>
+                          </div>
+                      </div>`;
+    }
   });
 
+  const musicTitle = document.querySelector('.music_title');
+  const mainAnimation = document.querySelector('.main-animation');
+
+  mainAnimation.style.display = 'none';
+  musicTitle.style.display = 'block';
+  songList.style.display = 'block';
   songList.innerHTML = resultHTML;
+
+  songList.scrollTo(0, 0);
+
   isLoading = false;
+  buttonLoad.style.display = 'none';
 
   // 스크롤 후 데이터 수신 시 이벤트 리스너 추가
   addEventListenersToSongs();
@@ -582,10 +648,19 @@ async function renderBySearch(page = 1) {
 // 무한 스크롤 다음페이지 렌더링
 async function renderNextPage(page) {
   isLoading = true;
+  buttonLoad.style.display = 'block';
+
   const newItems = await searchItems(searchValue, page);
+
   if (!newItems) {
+    buttonLoad.innerText = '마지막 검색 결과입니다.';
+    setTimeout(() => {
+      buttonLoad.style.display = 'none';
+      buttonLoad.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Loading';
+      }, 1200);
     return;
   }
+
   result = result.concat(newItems);
   tracksList = result.map((item) => ({
     uri: item.uri,
@@ -608,36 +683,31 @@ function addEventListenersToSongs() {
       item.classList.remove("active");
     });
 
-    // 각 song-item 내의 song-play 버튼 선택
-    let playBtn = item.querySelector(".song-play");
-
-    // song-play 버튼에 클릭 이벤트 리스너 추가
-    playBtn.addEventListener("click", async () => {
-      console.log("재생");
-      const token = localStorage.getItem("spotify_token");
-      const uri = item.getAttribute("data-uri");
-      if (token && uri) {
-        const index = Array.from(songItems).indexOf(item);
-        await playTrack(uri, token, index);
-      }
-
-      let icon = playBtn.querySelector("i");
-      if (icon.classList.contains("fa-play")) {
-        icon.classList.remove("fa-play");
-        icon.classList.add("fa-pause");
-      } else {
-        icon.classList.remove("fa-pause");
-        icon.classList.add("fa-play");
-      }
-    });
+    // 곡명, 장르명 검색일때만 활성화
+    if (selectedValue == 'track' || selectedValue == 'genre') {
+      // 각 song-item 내의 song-play 버튼 선택
+      let playBtn = item.querySelector(".song-play");
+  
+      // song-play 버튼에 클릭 이벤트 리스너 추가
+      playBtn.addEventListener("click", async () => {
+        console.log("재생");
+        const token = localStorage.getItem("spotify_token");
+        const uri = item.getAttribute("data-uri");
+        if (token && uri) {
+          const index = Array.from(songItems).indexOf(item);
+          await playTrack(uri, token, index);
+        }
+  
+        let icon = playBtn.querySelector("i");
+        if (icon.classList.contains("fa-play")) {
+          icon.classList.remove("fa-play");
+          icon.classList.add("fa-pause");
+        } else {
+          icon.classList.remove("fa-pause");
+          icon.classList.add("fa-play");
+        }
+      });
+    }
   });
 }
 
-/**
- * Preview URL을 사용하여 트랙 재생
- * @param {string} previewUrl - Spotify 트랙의 미리보기 URL
- */
-const playPreview = (previewUrl) => {
-  const audio = new Audio(previewUrl);
-  audio.play();
-};

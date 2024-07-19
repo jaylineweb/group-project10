@@ -54,7 +54,13 @@ menuBtns.forEach((item) => {
 
     musicTitle.textContent = `${searchValue}`;
 
-    console.log(event.target.textContent); // 클릭시 텍스트 값 확인용
+    const mainAnimation = document.querySelector('.main-animation');
+    const songList = document.querySelector('#song-list');
+
+    mainAnimation.style.display = 'none';
+    songList.style.display = 'block';
+    musicTitle.style.display = 'block';
+
     renderBySearch(); // 검색 결과 렌더링
   });
 });
