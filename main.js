@@ -11,6 +11,10 @@ closeBtn.addEventListener("click", () => {
   header.classList.remove("on");
 });
 
+const closeMenu = () => {
+  header.classList.remove("on");
+};
+
 window.addEventListener("resize", () => {
   if (window.innerWidth > 760) closeMenu(); // mobile(760px) 변형 시(resizing) 사이드배너가 열린 상태로 view되는걸 방지
 });

@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   setInterval(changeAlbumJacket, 2500);
 
-  animationContent = "rotateLP 5s linear infinite";
+  let animationContent = "rotateLP 5s linear infinite";
   lpBoard.style.animation = animationContent;
 
   //초기 이미지 세팅
@@ -98,6 +98,18 @@ document.addEventListener("DOMContentLoaded", () => {
   } else {
     console.log("No token found");
   }
+
+  // 창 크기 조정 시 사이드 메뉴 닫기
+  const closeMenu = () => {
+    const header = document.getElementById("header");
+    if (header) {
+      header.classList.remove("on");
+    }
+  };
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 760) closeMenu(); // mobile(760px) 변형 시(resizing) 사이드배너가 열린 상태로 view되는걸 방지
+  });
 });
 
 /**
@@ -266,19 +278,17 @@ const renderCurrentTrack = (track) => {
   const seconds = ((duration_ms % 60000) / 1000).toFixed(0);
   const duration = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
 
-  const currentTrackHTML = `
-        <div class="lyrics-controls">
+  const currentTrackHTML = `<div class="lyrics-controls">
             <img src="${album.images[0].url}" alt="Album Art" class="lyrics-view">
             <div class="lyrics-title">${name}</div>
             <div class="lyrics-artist">${artists.map((artist) => artist.name).join(", ")}</div>
             <div class="lyrics-album">${album.name}</div>
             <button class="lyrics-prev"><span class="skip">이전곡</span><i class="fa-solid fa-backward"></i></button>
-            <button class="lyrics-play"><span class="skip">재생버튼</span><i class="fa-solid fa-play"></i></button>
+            <button class="lyrics-play"><span class="skip">재생버튼</span><i class="fa-solid fa-${isPlaying ? "pause" : "play"}"></i></button>
             <button class="lyrics-next"><span class="skip">다음곡</span><i class="fa-solid fa-forward"></i></button>
             <div class="lyrics-duration">${duration}</div>
             <div class="lyrics-checkbox"><input type="checkbox" style="border: 1px solid red;"></div>
-        </div>
-    `;
+        </div>`;
 
   bottomLine.innerHTML = currentTrackHTML;
   setupPlaybackControls(localStorage.getItem("spotify_token"));
@@ -330,14 +340,21 @@ const updatePlayButton = () => {
  * @param {string} token - Spotify API 토큰
  */
 const pausePlayback = async (token) => {
+  if (!deviceId) {
+    console.error("No active device available");
+    return;
+  }
+
   try {
-    await fetch("https://api.spotify.com/v1/me/player/pause", {
+    await fetch(`https://api.spotify.com/v1/me/player/pause?device_id=${deviceId}`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
+    isPlaying = false; // 상태 업데이트 추가
     console.log("Playback paused");
+    updatePlayButton();
   } catch (error) {
     console.error("Error pausing playback:", error);
   }
