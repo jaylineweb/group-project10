@@ -1,6 +1,6 @@
 // 주상우 : SDK Control
-const clientId = "e4aca5f316194d7ba7330a8da5d2af07";
-const clientSecret = "b8a4d84b134942488e744e87a54111c6";
+const clientId = "b488526ffa804a92b41f45e03760d3ff";
+const clientSecret = "7cd6750d4a0a41eba283685a51292362";
 const redirectUri = "https://group-project-10.netlify.app";
 const authEndpoint = "https://accounts.spotify.com/authorize";
 const scopes = ["playlist-read-private", "playlist-read-collaborative", "user-read-playback-state", "user-modify-playback-state", "user-read-currently-playing", "streaming"];
@@ -395,10 +395,12 @@ const playPreview = (previewUrl) => {
 // 박승원 : UI Control
 let scrollPage = 1;
 let isLoading = false;
+let isSearchedByButton = false;
 let numberOfSearchedItems;
 let result = new Array();
 let resultHTML = '';
 let isMainScreen = true;
+let searchValue;
 
 let resultInfo_Name;
 
@@ -516,6 +518,7 @@ async function searchItems(keyword, page) {
   let offset = (page - 1) * 10;
   console.log("offset", offset);
   let searchType = selectedValue;
+  console.log(searchType);
 
   if (numberOfSearchedItems < offset) {
     return;
@@ -538,10 +541,29 @@ async function searchItems(keyword, page) {
   return data[`${searchType}s`].items;
 }
 
-let searchValue;
+//앨범 트랙 가져오는 함수
+async function searchAlbumTracks(id) {
+  isSearchedByButton = true;
+  const token = await getToken();
+
+  let searchURL = new URL(`https://api.spotify.com/v1/albums/${id}/tracks`);
+
+  const result = await fetch(searchURL, {
+    method: "GET",
+    headers: { Authorization: "Bearer " + token },
+  });
+
+  const data = await result.json();
+  console.log("searchTracks", data.items);
+
+  return data.items;
+}
+
+
 
 // 검색창에 입력한 값 받아서 배열로 변환
 async function searchTracksByInput() {
+  isSearchedByButton = false;
   scrollPage = 1;
 
   searchValue = document.querySelector(".search-input").value;
@@ -580,6 +602,7 @@ searchInput.addEventListener("keyup", () => {
   isSearched = false;
 });
 
+// 검색결과 렌더링 함수
 async function renderBySearch(page = 1) {
   resultHTML = "";
 
@@ -588,12 +611,28 @@ async function renderBySearch(page = 1) {
     const durationInSeconds = Math.floor((Number(item.duration_ms) / 1000) % 60);
     const formattedSeconds = durationInSeconds < 10 ? `0${durationInSeconds}` : durationInSeconds;
 
+    console.log(selectedValue, "in renderbysearch");
+
+    let albumJacketUrl = "";
+    if (selectedValue == 'track') {
+      if (item.album && item.album.images && item.album.images[1]) {
+        albumJacketUrl = item.album.images[1].url;
+      } else {
+        albumJacketUrl = copiedJacket;
+      }
+    } else {
+      if (item.images && item.images[1]) {
+        albumJacketUrl = item.images[1].url;
+      }
+    }
+
     return {
-      albumJacketUrl: `${selectedValue == 'track' ? item.album.images[1].url : item.images[1].url}`,
+      albumJacketUrl: albumJacketUrl,
       songName: item.name,
       artist: `${selectedValue == 'artist' ? item.genres[0] : item.artists[0].name}`,
       totalTime: `${selectedValue == 'track' ? durationInMinutes + ":" + formattedSeconds : ''}`,
       uri: `${ selectedValue == 'track' ? item.uri : ''}`,
+      albumId: `${selectedValue == 'album' ? item.id : ''}`,
     };
   });
 
@@ -620,6 +659,7 @@ async function renderBySearch(page = 1) {
                               <div class="song-details">
                                   <div class="song-title">${item.songName.length > 15 ? item.songName.substring(0, 15) + ' ...' : item.songName}</div>
                                   <div class="song-artist">${item.artist.length > 15 ? item.artist.substring(0, 15) + ' ...' : item.artist}</div>
+                                  <div class="album-id" style="display: none;">${item.albumId}</div>
                               </div>
                           </div>
                           <div class="song-controls">
@@ -648,6 +688,10 @@ async function renderBySearch(page = 1) {
 
 // 무한 스크롤 다음페이지 렌더링
 async function renderNextPage(page) {
+  //앨범 검색에서 무한 스크롤 막기
+  if (isSearchedByButton) {
+    return;
+  }
   isLoading = true;
   buttonLoad.style.display = 'block';
 
@@ -710,4 +754,45 @@ function addEventListenersToSongs() {
       });
     }
   });
+}
+
+let beforeSelected;
+let copiedJacket;
+
+// 앨범안에 있는 트랙 검색
+async function getRelatedSongs() {
+  if (selectedValue == 'album') {
+    beforeSelected = selectedValue;
+    selectedValue = 'track';
+    let Id;
+
+    // 상세보기 버튼 클릭 시 해당 태그의 제목 가져오기
+    async function handleClick(event) {
+      if (event.target.classList.contains('view-details')) {
+        let songItem = event.target.closest('.song-item');
+        let albumId = songItem.querySelector('.album-id').textContent;
+        let jacketsSrc = songItem.querySelector('.song-info img').getAttribute('src');
+        Id = albumId;
+        copiedJacket = jacketsSrc;
+
+        result = await searchAlbumTracks(Id);
+        console.log(result);
+        renderBySearch();
+      }
+    }
+
+    document.querySelector('.song-list').addEventListener('click', handleClick);
+
+    function removeClickListener() {
+      document.querySelector('.song-list').removeEventListener('click', handleClick);
+    }
+
+    // 3초 후에 이벤트리스너 삭제
+    setTimeout(removeClickListener, 5000);
+    setTimeout(() => {
+      selectedValue = beforeSelected;
+    }, 700);
+  } else {
+    console.log('click 시 artist의 top 노래 재생');
+  }
 }
