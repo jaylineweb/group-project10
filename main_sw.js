@@ -81,6 +81,7 @@ const initializePlayer = (token) => {
       console.log("Ready with Device ID", device_id);
       deviceId = device_id;
       activateDevice(token, device_id);
+      setupPlaybackControls(token); // 플레이어 제어 버튼 이벤트 리스너 추가
     });
 
     player.addListener("not_ready", ({ device_id }) => {
@@ -93,6 +94,7 @@ const initializePlayer = (token) => {
       }
       isPlaying = !state.paused;
       currentTrackUri = state.track_window.current_track.uri;
+      currentTrackIndex = tracksList.findIndex((track) => track.uri === currentTrackUri);
       updatePlayButton();
       renderCurrentTrack(state.track_window.current_track);
     });
@@ -113,6 +115,7 @@ const initializePlayer = (token) => {
  * @param {string} deviceId - Spotify 디바이스 ID
  */
 const activateDevice = async (token, deviceId) => {
+  console.log("Spotify 디바이스를 활성화")
   try {
     await fetch(`https://api.spotify.com/v1/me/player`, {
       method: "PUT",
@@ -145,7 +148,6 @@ const playTrack = async (uri, token, index) => {
       return;
     }
   }
-
   if (!deviceId) {
     console.error("No active device available");
     return;
@@ -167,9 +169,21 @@ const playTrack = async (uri, token, index) => {
       console.log("Track is playing");
       currentTrackUri = uri;
       currentTrackIndex = index;
+      console.log("현재 트랙 재생 인덱스", currentTrackIndex)
       isPlaying = true;
       updatePlayButton();
       getCurrentPlayingTrack(token);
+
+      // 재생 중인 트랙의 아이콘 상태를 업데이트
+      document.querySelectorAll(".song-play i").forEach(icon => {
+        icon.classList.remove("fa-pause");
+        icon.classList.add("fa-play");
+      });
+      const currentPlayButton = document.querySelectorAll(".song-item")[index].querySelector(".song-play i");
+      if (currentPlayButton) {
+        currentPlayButton.classList.remove("fa-play");
+        currentPlayButton.classList.add("fa-pause");
+      }
     } else {
       console.error("Error playing track:", response.statusText);
     }
@@ -361,6 +375,7 @@ const skipToPrevious = async (token) => {
  * @param {string} token - Spotify API 토큰
  */
 const playNextTrack = (token) => {
+  console.info("다음곡을 재생")
   if (currentTrackIndex < tracksList.length - 1) {
     currentTrackIndex++;
     playTrack(tracksList[currentTrackIndex].uri, token, currentTrackIndex);
@@ -456,7 +471,7 @@ const songList = document.querySelector('.song-list');
 songList.addEventListener('scroll', () => {
   const scrollPos = songList.clientHeight + songList.scrollTop;
   const totalHeight = songList.scrollHeight;
-  
+
   if (scrollPos >= (totalHeight * 0.9)) {
     if (!isLoading) {
       scrollPage++;
@@ -484,10 +499,10 @@ const searchInput = document.querySelector('.search-input');
 let isSearched = false;
 
 searchInput.addEventListener('keydown', (event) => {
-    if (event.keyCode == 13 && !isSearched) {
-        searchTracksByInput();
-        isSearched = true;
-    }
+  if (event.keyCode == 13 && !isSearched) {
+    searchTracksByInput();
+    isSearched = true;
+  }
 });
 searchInput.addEventListener('keyup', () => {
   isSearched = false;
@@ -631,15 +646,15 @@ async function renderBySearch(page = 1) {
       songName: item.name,
       artist: `${selectedValue == 'artist' ? item.genres[0] : item.artists[0].name}`,
       totalTime: `${selectedValue == 'track' ? durationInMinutes + ":" + formattedSeconds : ''}`,
-      uri: `${ selectedValue == 'track' ? item.uri : ''}`,
-      albumId: `${selectedValue == 'album' ? item.id : ''}`,
+      uri: `${selectedValue == 'track' ? item.uri : ''}`,
     };
   });
 
   // 각각의 item 렌더링
   resultInfo.forEach((item, i) => {
     if (selectedValue == 'track') {
-      resultHTML += `<div class="song-item">
+      console.log("앨범 x")
+      resultHTML += `<div class="song-item" data-uri="${item.uri}"> 
                           <div class="song-info">
                               <img src="${item.albumJacketUrl}" alt="Album Art" width="75">
                               <div class="song-details">
@@ -653,6 +668,7 @@ async function renderBySearch(page = 1) {
                           </div>
                       </div>`;
     } else {
+      console.log("앨범 o")
       resultHTML += `<div class="song-item">
                           <div class="song-info">
                               <img src="${item.albumJacketUrl}" alt="Album Art" width="75">
@@ -702,7 +718,7 @@ async function renderNextPage(page) {
     setTimeout(() => {
       buttonLoad.style.display = 'none';
       buttonLoad.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Loading';
-      }, 1200);
+    }, 1200);
     return;
   }
 
@@ -732,17 +748,28 @@ function addEventListenersToSongs() {
     if (selectedValue == 'track' || selectedValue == 'genre') {
       // 각 song-item 내의 song-play 버튼 선택
       let playBtn = item.querySelector(".song-play");
-  
+
       // song-play 버튼에 클릭 이벤트 리스너 추가
       playBtn.addEventListener("click", async () => {
         console.log("재생");
         const token = localStorage.getItem("spotify_token");
         const uri = item.getAttribute("data-uri");
+
+        console.info("재생 토큰: ", token)
+        console.info("재생 url: ", uri);
         if (token && uri) {
+          console.log("재생 실행");
           const index = Array.from(songItems).indexOf(item);
           await playTrack(uri, token, index);
         }
-  
+
+        // 모든 재생 버튼 아이콘을 초기화
+        document.querySelectorAll(".song-play i").forEach(icon => {
+          icon.classList.remove("fa-pause");
+          icon.classList.add("fa-play");
+        });
+
+        // 현재 재생 중인 트랙의 아이콘을 업데이트
         let icon = playBtn.querySelector("i");
         if (icon.classList.contains("fa-play")) {
           icon.classList.remove("fa-play");
@@ -754,45 +781,4 @@ function addEventListenersToSongs() {
       });
     }
   });
-}
-
-let beforeSelected;
-let copiedJacket;
-
-// 앨범안에 있는 트랙 검색
-async function getRelatedSongs() {
-  if (selectedValue == 'album') {
-    beforeSelected = selectedValue;
-    selectedValue = 'track';
-    let Id;
-
-    // 상세보기 버튼 클릭 시 해당 태그의 제목 가져오기
-    async function handleClick(event) {
-      if (event.target.classList.contains('view-details')) {
-        let songItem = event.target.closest('.song-item');
-        let albumId = songItem.querySelector('.album-id').textContent;
-        let jacketsSrc = songItem.querySelector('.song-info img').getAttribute('src');
-        Id = albumId;
-        copiedJacket = jacketsSrc;
-
-        result = await searchAlbumTracks(Id);
-        console.log(result);
-        renderBySearch();
-      }
-    }
-
-    document.querySelector('.song-list').addEventListener('click', handleClick);
-
-    function removeClickListener() {
-      document.querySelector('.song-list').removeEventListener('click', handleClick);
-    }
-
-    // 3초 후에 이벤트리스너 삭제
-    setTimeout(removeClickListener, 5000);
-    setTimeout(() => {
-      selectedValue = beforeSelected;
-    }, 700);
-  } else {
-    console.log('click 시 artist의 top 노래 재생');
-  }
 }
