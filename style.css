@@ -25,7 +25,7 @@ img{max-width:100%;}
 .top-line .music_title{height:20%;font-size:40px;font-weight:800;background:#333;color:#1ed760;padding:3rem 0 3rem 3rem;}
 
 #header{
-    background-color:#000;
+    background-color:#000; z-index:100;
 }
 #header .site-gnb{display:flex;position:relative;justify-content:space-between;padding:15px 0;}
 #header .site-gnb .site-gnb-list{display:flex;align-items:center;margin:0;font-size:0;padding:0;/* text-align:right; */}
@@ -60,7 +60,7 @@ background-repeat:no-repeat;background-position:center;background-size:cover;ove
 
 .buttonload{height:50px;background:rgba(100, 100, 100, 0.3);
 border:1px solid rgba(72, 205, 150, 0.3);border-radius:10px;color:rgba(0, 0, 0, 0.4);
-padding:10px 20px;font-size:16px;position:absolute;top:calc(50% - 25px);left:calc(50% - 50px);z-index:100;display:none;}
+padding:10px 20px;font-size:16px;position:absolute;top:calc(50% - 25px);left:calc(50% - 50px);z-index:50;display:none;}
 .music_title{display:none;}
 .song-list{overflow-y:scroll;width:100%;height:80%;padding:0;background-color:#242424;display:none;}
 .song-list .song-item{position:relative;padding:15px 20px;background-color:#ffffff;z-index:1;}
