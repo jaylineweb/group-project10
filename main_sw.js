@@ -786,3 +786,11 @@ function addEventListenersToSongs() {
 async function getRelatedSongs() {
 
 }
+
+//돋보기 화면일 경우 클릭하면 검색창 아래로 전시
+const searchIcon = document.querySelector('.search-sm-initial');
+const searchTotal = document.querySelector('.search');
+
+searchIcon.addEventListener('click',() => {
+  searchTotal.classList.toggle('active');
+});

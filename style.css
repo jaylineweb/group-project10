@@ -36,13 +36,15 @@ img{max-width:100%;}
 #header .site-gnb .site-gnb-list .gnb-item .dropdown button ul{background-color:#333;}
 #header .site-gnb .site-gnb-list .gnb-item a:hover{/*background:#ffffff7d;*/border-radius:4px;color:#919496;}
 
-.search{display:flex;padding:0 20px;font-size:0;align-items:center;background-color:#fff;border:1px solid #999;border-radius:30px;}
+.search{display:flex;padding:0 20px;font-size:0;align-items:center;background-color:#fff;border:1px solid #999;border-radius:30px;box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);}
 .search:after{display:table;clear:both;}
 .search input,.search button,.search select{float:left;padding:3px 0;border:none;font-size:16px;}
 .search button{width:30px;height:37px;background-color:transparent;font-size:21px;font-weight:600;/* color:#4a3ab2; */}
 .search input{padding-left:10px;}
 .search input:focus{outline:none;}
 .search select{width:auto;height:30px;color:#4a3ab2;border:none;}
+
+.search-sm-initial{display:none;justify-content:center;align-items:center;cursor:pointer;}
 
 .close-btn{display:none;position:absolute;top:14px;right:14px;width:39px;height:39px;padding:0;border:none;background-color:transparent;font-size:31px;color:#fff;z-index:2;}
 .nav-bar{display:none;width:45px;height:45px;border:none;}
@@ -102,6 +104,9 @@ padding:10px 20px;font-size:16px;position:absolute;top:calc(50% - 25px);left:cal
 }
 @media all and (max-width:1200px){
     ._right{width:740px;}
+    .search{display:none;}
+    .search.active{height:50px;display:flex;position:absolute;right:20px;bottom:-70%;}
+    .search-sm-initial{display:flex;}
 }
 @media screen and (max-width:950px){
     .music_col,._left,._right{display:block;width:100%;height:auto;}
@@ -109,7 +114,9 @@ padding:10px 20px;font-size:16px;position:absolute;top:calc(50% - 25px);left:cal
     ._left{padding:1.5rem 0;}
     /* ._left ._left_col{display:block;} */
     ._left ._left_col span.log_stat{display:flex;width:55%;position:absolute;top:45px;align-items:center;justify-content:flex-end;}
-
+    .search{display:none;}
+    .search.active{height:50px;display:flex;position:absolute;right:20px;bottom:-70%;}
+    .search-sm-initial{display:flex;}
 }
 @media screen and (max-width:760px){
     /* #header .site-gnb{display:block;} */
@@ -122,12 +129,12 @@ padding:10px 20px;font-size:16px;position:absolute;top:calc(50% - 25px);left:cal
     #header .site-gnb .site-gnb-list,.search{justify-content:space-between;}
     .nav-bar{display:block;position:absolute;top:25px;right:6px;font-size:25px;}
     .close-btn{display:block;}
-    .search{overflow:hidden;margin-top:.95rem;padding:.55rem 0;}
+    .search{display:flex;overflow:hidden;margin-top:.95rem;padding:.55rem 0;position:static;}
     .search input{width:130px;}
+    .search-sm-initial{display:none;}
     .top-line .music_title{padding:3.3rem 0 3.3rem 0;font-size:3.25rem;text-align:center;}
     .main-animation .lp-player{width:100%;aspect-ratio:5 / 4.07}
 }
-
 
 /* 메인화면 슬라이드 */
 @keyframes rotateLP {
