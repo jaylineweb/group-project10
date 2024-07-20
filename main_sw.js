@@ -792,6 +792,33 @@ async function getRelatedSongs() {
 
 }
 
+async function getDomesticTop(page = 1) {
+  const top50Uri = '37i9dQZF1DWT9uTRZAYj0c';
+  const newRlsUri = '37i9dQZF1DXe5W6diBL5N4';
+  isSearchedByButton = true;
+
+  const token = await getToken();
+
+  let searchURL = new URL(`https://api.spotify.com/v1/playlists/${top50Uri}/tracks`);
+
+  const searched = await fetch(searchURL, {
+    method: "GET",
+    headers: { Authorization: "Bearer " + token },
+  });
+
+  const data = await searched.json();
+  const dataItems = data.items;
+
+  console.log("total", data.items.length);
+  console.log("searchItems", dataItems);
+
+  result = dataItems.map((item) => {
+    return item.track
+  })
+
+  renderBySearch();
+}
+
 //돋보기 화면일 경우 클릭하면 검색창 아래로 전시
 const searchIcon = document.querySelector('.search-sm-initial');
 const searchTotal = document.querySelector('.search');
