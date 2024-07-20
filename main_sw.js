@@ -238,15 +238,20 @@ const renderCurrentTrack = (track) => {
   const duration = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
 
   const currentTrackHTML = `<div class="lyrics-controls">
-            <img src="${album.images[0].url}" alt="Album Art" class="lyrics-view">
-            <div class="lyrics-title">${name}</div>
-            <div class="lyrics-artist">${artists.map((artist) => artist.name).join(", ")}</div>
-            <div class="lyrics-album">${album.name}</div>
-            <button class="lyrics-prev"><span class="skip">이전곡</span><i class="fa-solid fa-backward"></i></button>
-            <button class="lyrics-play"><span class="skip">재생버튼</span><i class="fa-solid fa-${isPlaying ? "pause" : "play"}"></i></button>
-            <button class="lyrics-next"><span class="skip">다음곡</span><i class="fa-solid fa-forward"></i></button>
+            <div class="lyrics-info">
+              <img src="${album.images[0].url}" alt="Album Art" class="lyrics-view">
+              <div class="title-artist">
+                <div class="lyrics-title">${name}</div>
+                <div class="lyrics-artist">${artists.map((artist) => artist.name).join(", ")}</div>
+                <div class="lyrics-album">${album.name}</div>
+              </div>
+            </div>
+            <div class="button-combined">
+              <button class="lyrics-prev"><span class="skip">이전곡</span><i class="fa-solid fa-backward"></i></button>
+              <button class="lyrics-play"><span class="skip">재생버튼</span><i class="fa-solid fa-${isPlaying ? "pause" : "play"}"></i></button>
+              <button class="lyrics-next"><span class="skip">다음곡</span><i class="fa-solid fa-forward"></i></button>
+            </div>
             <div class="lyrics-duration">${duration}</div>
-            <div class="lyrics-checkbox"><input type="checkbox" style="border: 1px solid red;"></div>
         </div>`;
 
   bottomLine.innerHTML = currentTrackHTML;

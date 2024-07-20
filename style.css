@@ -83,8 +83,11 @@ padding:10px 20px;font-size:16px;position:absolute;top:calc(50% - 25px);left:cal
 
 .bottom-line{height:105px;position:absolute;bottom:0;left:0;z-index:1;width:100%;/* height:120px; */padding:14px 0;/* border:10px solid #5ecbd0; */background-color:#262626;/* border-radius:10px; */display:flex;align-items:center;justify-content:space-between;}
 .lyrics-controls {width:100%;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:space-between;justify-content:space-between;color:#ffffff;}
+.lyrics-info {display:flex;justify-content:space-around;align-items:center;gap:20px;}
 .lyrics-view{width:65px;height:65px;border:none;border-radius:50%;background-color:#ffffff;}
-.lyrics-title, .lyrics-prev, .lyrics-play, .lyrics-next, .lyrics-duration {padding:5px;/* border:1px solid #000; */text-align:center;}
+.title-artist{display:flex;justify-content:center;align-items:center;gap:2.5rem;}
+.lyrics-artist, .lyrics-album{color:#999999;}
+.lyrics-prev, .lyrics-play, .lyrics-next, .lyrics-duration {padding:5px;/* border:1px solid #000; */text-align:center;}
 .lyrics-prev,.lyrics-play,.lyrics-play,.lyrics-next{padding:0;border:none;font-size:22px;background-color:unset;color:#ffffff;}
 .button-combined {display:flex;justify-content:center;align-items:center;gap:60px;}
 .lyrics-prev, .lyrics-play, .lyrics-play, .lyrics-next i{
@@ -107,7 +110,9 @@ padding:10px 20px;font-size:16px;position:absolute;top:calc(50% - 25px);left:cal
     .search{display:none;}
     .search.active{height:50px;display:flex;position:absolute;right:20px;bottom:-70%;}
     .search-sm-initial{display:flex;}
-    .button-combined {gap:40px;}
+    .button-combined{gap:40px;}
+    .title-artist{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:.4rem;}
+    .lyrics-album{display:none;}
 }
 @media screen and (max-width:950px){
     .music_col,._left,._right{display:block;width:100%;height:auto;}
@@ -127,7 +132,7 @@ padding:10px 20px;font-size:16px;position:absolute;top:calc(50% - 25px);left:cal
 @media screen and (max-width:760px){
     /* #header .site-gnb{display:block;} */
     .top-line{height:calc(100% - 105px);}
-    .lyrics-view{display:none;}
+    .lyrics-view{display:none !important;}
     #contents{height:100%;}
     #header{position:fixed;top:0;right:-100%;width:300px;height:100%;padding:0 20px;background-color:#333;transition:all 0.3s ease-in;z-index:4;}
     #header.on{right:0;}
