@@ -127,6 +127,7 @@ padding:10px 20px;font-size:16px;position:absolute;top:calc(50% - 25px);left:cal
 @media screen and (max-width:760px){
     /* #header .site-gnb{display:block;} */
     .top-line{height:calc(100% - 105px);}
+    .lyrics-view{display:none;}
     #contents{height:100%;}
     #header{position:fixed;top:0;right:-100%;width:300px;height:100%;padding:0 20px;background-color:#333;transition:all 0.3s ease-in;z-index:4;}
     #header.on{right:0;}
