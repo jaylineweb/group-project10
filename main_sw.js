@@ -1,7 +1,7 @@
 // 주상우 : SDK Control
-const clientId = "b488526ffa804a92b41f45e03760d3ff";
-const clientSecret = "7cd6750d4a0a41eba283685a51292362";
-const redirectUri = "https://group-project-10.netlify.app";
+const clientId = "e4aca5f316194d7ba7330a8da5d2af07";
+const clientSecret = "b8a4d84b134942488e744e87a54111c6";
+const redirectUri = "https://splendorous-mandazi-ce7dbe.netlify.app/javascript/spotify";
 const authEndpoint = "https://accounts.spotify.com/authorize";
 const scopes = ["playlist-read-private", "playlist-read-collaborative", "user-read-playback-state", "user-modify-playback-state", "user-read-currently-playing", "streaming"];
 
@@ -169,9 +169,8 @@ const playTrack = async (uri, token, index) => {
       console.log("Track is playing");
       currentTrackUri = uri;
       currentTrackIndex = index;
-      console.log("현재 트랙 재생 인덱스", currentTrackIndex)
-      isPlaying = true;
-      updatePlayButton();
+      isPlaying = true; // 상태 업데이트
+      updatePlayButton(); // 플레이 버튼 업데이트
       getCurrentPlayingTrack(token);
 
       // 재생 중인 트랙의 아이콘 상태를 업데이트
@@ -295,8 +294,10 @@ const togglePlayback = async (token) => {
  */
 const updatePlayButton = () => {
   const playButtonIcon = document.querySelector(".lyrics-play i");
-  playButtonIcon.classList.toggle("fa-play", !isPlaying);
-  playButtonIcon.classList.toggle("fa-pause", isPlaying);
+  if (playButtonIcon) {
+    playButtonIcon.classList.toggle("fa-play", !isPlaying);
+    playButtonIcon.classList.toggle("fa-pause", isPlaying);
+  }
 };
 
 /**
@@ -316,9 +317,15 @@ const pausePlayback = async (token) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    isPlaying = false; // 상태 업데이트 추가
+    isPlaying = false; // 상태 업데이트
     console.log("Playback paused");
-    updatePlayButton();
+    updatePlayButton(); // 플레이 버튼 업데이트
+
+    // 모든 재생 버튼 아이콘을 초기화
+    document.querySelectorAll(".song-play i").forEach(icon => {
+      icon.classList.remove("fa-pause");
+      icon.classList.add("fa-play");
+    });
   } catch (error) {
     console.error("Error pausing playback:", error);
   }
@@ -415,12 +422,10 @@ const playPreview = (previewUrl) => {
 // 박승원 : UI Control
 let scrollPage = 1;
 let isLoading = false;
-let isSearchedByButton = false;
 let numberOfSearchedItems;
 let result = new Array();
 let resultHTML = '';
 let isMainScreen = true;
-let searchValue;
 
 let resultInfo_Name;
 
@@ -538,7 +543,6 @@ async function searchItems(keyword, page) {
   let offset = (page - 1) * 10;
   console.log("offset", offset);
   let searchType = selectedValue;
-  console.log(searchType);
 
   if (numberOfSearchedItems < offset) {
     return;
@@ -561,29 +565,10 @@ async function searchItems(keyword, page) {
   return data[`${searchType}s`].items;
 }
 
-//앨범 트랙 가져오는 함수
-async function searchAlbumTracks(id) {
-  isSearchedByButton = true;
-  const token = await getToken();
-
-  let searchURL = new URL(`https://api.spotify.com/v1/albums/${id}/tracks`);
-
-  const result = await fetch(searchURL, {
-    method: "GET",
-    headers: { Authorization: "Bearer " + token },
-  });
-
-  const data = await result.json();
-  console.log("searchTracks", data.items);
-
-  return data.items;
-}
-
-
+let searchValue;
 
 // 검색창에 입력한 값 받아서 배열로 변환
 async function searchTracksByInput() {
-  isSearchedByButton = false;
   scrollPage = 1;
 
   searchValue = document.querySelector(".search-input").value;
@@ -622,32 +607,19 @@ searchInput.addEventListener("keyup", () => {
   isSearched = false;
 });
 
-// 검색결과 렌더링 함수
+// 검색 결과를 페이지별로 렌더링하고, 이전 결과를 유지하면서 새로운 결과를 추가하는 함수
 async function renderBySearch(page = 1) {
-  resultHTML = "";
+  if (page === 1) {
+    resultHTML = ""; // 첫 페이지일 경우 결과 HTML 초기화
+  }
 
   const resultInfo = result.map((item, i) => {
     const durationInMinutes = Math.floor(Number(item.duration_ms) / 1000 / 60);
     const durationInSeconds = Math.floor((Number(item.duration_ms) / 1000) % 60);
     const formattedSeconds = durationInSeconds < 10 ? `0${durationInSeconds}` : durationInSeconds;
 
-    console.log(selectedValue, "in renderbysearch");
-
-    let albumJacketUrl = "";
-    if (selectedValue == 'track') {
-      if (item.album && item.album.images && item.album.images[1]) {
-        albumJacketUrl = item.album.images[1].url;
-      } else {
-        albumJacketUrl = copiedJacket;
-      }
-    } else {
-      if (item.images && item.images[1]) {
-        albumJacketUrl = item.images[1].url;
-      }
-    }
-
     return {
-      albumJacketUrl: albumJacketUrl,
+      albumJacketUrl: `${selectedValue == 'track' ? item.album.images[1].url : item.images[1].url}`,
       songName: item.name,
       artist: `${selectedValue == 'artist' ? item.genres[0] : item.artists[0].name}`,
       totalTime: `${(selectedValue == 'track' || isSearchedByButton) ? durationInMinutes + ":" + formattedSeconds : ''}`,
@@ -658,7 +630,7 @@ async function renderBySearch(page = 1) {
   // 각각의 item 렌더링
   resultInfo.forEach((item, i) => {
     if (selectedValue == 'track' || isSearchedByButton) {
-      console.log("앨범 x")
+      console.log("앨범 x");
       resultHTML += `<div class="song-item" data-uri="${item.uri}"> 
                           <div class="song-info">
                               <img src="${item.albumJacketUrl}" alt="Album Art" width="75">
@@ -673,14 +645,13 @@ async function renderBySearch(page = 1) {
                           </div>
                       </div>`;
     } else {
-      console.log("앨범 o")
+      console.log("앨범 o");
       resultHTML += `<div class="song-item">
                           <div class="song-info">
                               <img src="${item.albumJacketUrl}" alt="Album Art" width="75">
                               <div class="song-details">
                                   <div class="song-title">${item.songName.length > 15 ? item.songName.substring(0, 15) + ' ...' : item.songName}</div>
                                   <div class="song-artist">${item.artist.length > 15 ? item.artist.substring(0, 15) + ' ...' : item.artist}</div>
-                                  <div class="album-id" style="display: none;">${item.albumId}</div>
                               </div>
                           </div>
                           <div class="song-controls">
@@ -696,25 +667,25 @@ async function renderBySearch(page = 1) {
   mainAnimation.style.display = 'none';
   musicTitle.style.display = 'block';
   songList.style.display = 'block';
-  songList.innerHTML = resultHTML;
+  songList.innerHTML = resultHTML; // 결과를 songList에 추가
 
-  songList.scrollTo(0, 0);
+  songList.scrollTo(0, 0); // 스크롤을 맨 위로 초기화
 
-  isLoading = false;
-  buttonLoad.style.display = 'none';
+  isLoading = false; // 로딩 상태 초기화
+  buttonLoad.style.display = 'none'; // 로딩 버튼 숨기기
+
+  // tracksList 업데이트
+  tracksList = resultInfo.map((item) => ({ uri: item.uri, track: item }));
 
   // 스크롤 후 데이터 수신 시 이벤트 리스너 추가
-  addEventListenersToSongs();
+  addEventListenersToSongs(); // 각 노래 아이템에 이벤트 리스너 추가
 }
 
-// 무한 스크롤 다음페이지 렌더링
+
+// 무한 스크롤을 통해 다음 페이지의 검색 결과를 렌더링하는 함수
 async function renderNextPage(page) {
-  //앨범 검색에서 무한 스크롤 막기
-  if (isSearchedByButton) {
-    return;
-  }
   isLoading = true;
-  buttonLoad.style.display = 'block';
+  buttonLoad.style.display = 'block'; // 로딩 버튼 표시
 
   const newItems = await searchItems(searchValue, page);
 
@@ -727,15 +698,14 @@ async function renderNextPage(page) {
     return;
   }
 
-  result = result.concat(newItems);
+  result = result.concat(newItems); // 새로운 아이템을 기존 결과에 추가
   tracksList = result.map((item) => ({
     uri: item.uri,
     track: item,
   }));
-  console.log("result", result);
-  renderBySearch(page);
-}
 
+  renderBySearch(page); // 결과를 다시 렌더링
+}
 // 모든 song-item 요소들에 마우스 이벤트 리스너 추가
 function addEventListenersToSongs() {
   let songItems = document.querySelectorAll(".song-item");
@@ -756,16 +726,30 @@ function addEventListenersToSongs() {
 
       // song-play 버튼에 클릭 이벤트 리스너 추가
       playBtn.addEventListener("click", async () => {
-        console.log("재생");
+        console.log("재생/일시 정지");
         const token = localStorage.getItem("spotify_token");
         const uri = item.getAttribute("data-uri");
 
-        console.info("재생 토큰: ", token)
+        console.info("재생 토큰: ", token);
         console.info("재생 url: ", uri);
+
+        // 기존의 재생 로직을 재생/일시 정지 로직으로 변경
         if (token && uri) {
-          console.log("재생 실행");
+          console.log("재생/일시 정지 실행");
           const index = Array.from(songItems).indexOf(item);
-          await playTrack(uri, token, index);
+          if (currentTrackUri === uri && isPlaying) {
+            console.log("리스트에서 현재 트랙이 재생 중이면 일시 정지")
+            await pausePlayback(token);  // 재생 중지
+            isPlaying = false; // 상태 업데이트
+            updatePlayButton(); // 버튼 상태 업데이트
+          } else {
+            console.log("리스트에서 현재 트랙이 재생 중이 아니면 재생")
+            await playTrack(uri, token, index);  // 재생
+            isPlaying = true; // 상태 업데이트
+            currentTrackUri = uri; // 현재 트랙 URI 업데이트
+            currentTrackIndex = index; // 현재 트랙 인덱스 업데이트
+            updatePlayButton(); // 버튼 상태 업데이트
+          }
         }
 
         // 모든 재생 버튼 아이콘을 초기화
@@ -776,7 +760,7 @@ function addEventListenersToSongs() {
 
         // 현재 재생 중인 트랙의 아이콘을 업데이트
         let icon = playBtn.querySelector("i");
-        if (icon.classList.contains("fa-play")) {
+        if (isPlaying) {
           icon.classList.remove("fa-play");
           icon.classList.add("fa-pause");
         } else {
@@ -867,6 +851,6 @@ async function getNewRelease(page = 1) {
 const searchIcon = document.querySelector('.search-sm-initial');
 const searchTotal = document.querySelector('.search');
 
-searchIcon.addEventListener('click',() => {
+searchIcon.addEventListener('click', () => {
   searchTotal.classList.toggle('active');
 });
