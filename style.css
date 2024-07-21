@@ -142,6 +142,7 @@ img {
   display: block;
   padding: 13px 2.25rem;
   font-size: 18px;
+  background-color: #0d0d0d;
   font-family: spotify-circular, Helvetica, Arial, sans-serif;
   font-weight: 600;
   color: #ffffff;
@@ -599,8 +600,8 @@ img {
     right: -100%;
     width: 300px;
     height: 100%;
-    padding: 0 20px;
-    background-color: #333;
+    padding: 0;
+    background-color: #000;
     transition: all 0.3s ease-in;
     z-index: 4;
   }
@@ -620,7 +621,7 @@ img {
   #header .site-gnb .site-gnb-list .gnb-item{width:100%;}
   #header .site-gnb .site-gnb-list .gnb-item .dropdown button {
     width: 100%;
-    background-color: #333;
+    background-color: #0d0d0d;
     text-align: left;
   }
   #header .site-gnb .site-gnb-list,
@@ -644,7 +645,7 @@ img {
   .search {
     display: flex;
     overflow: hidden;
-    margin-top: 0.95rem;
+    padding-top: 0.95rem;
     padding: 0.55rem 0;
     position: static;
   }
