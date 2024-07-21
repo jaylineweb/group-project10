@@ -68,6 +68,16 @@ menuBtns.forEach((item) => {
   });
 });
 
+//sub title
+function subTtile(){
+  var h2Element = document.querySelector("h2.music_title");
+  var text = h2Element.innerHTML;
+  var newText = text.replace(/(검색결과)/g, '<span class="sub_tit">$1</span>');
+
+  h2Element.innerHTML = newText;
+}
+subTtile();
+
 //chageMusicSelect() 기능 구현 : select박스
 function chageMusicSelect() {
   let musicSelect = document.getElementById("search-option");
