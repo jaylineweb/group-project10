@@ -616,7 +616,7 @@ img {
   #header .site-gnb .site-gnb-list {
     flex-direction: column;
     justify-content: center;
-    gap: 10px;
+    gap: 3px;
   }
   #header .site-gnb .site-gnb-list .gnb-item{width:100%;}
   #header .site-gnb .site-gnb-list .gnb-item .dropdown button {
