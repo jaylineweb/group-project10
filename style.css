@@ -666,6 +666,7 @@ img {
   .button-combined {
     gap: 30px;
   }
+  .dropdown-menu-dark{width:100%;}
 }
 
 /* 메인화면 슬라이드 */
