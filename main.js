@@ -38,7 +38,8 @@ let menuBtns = document.querySelectorAll(".dropdown li button");
 menuBtns.forEach((item) => {
   item.addEventListener("click", async (event) => {
     event.preventDefault(); // 기본 동작 막기
-    isSearchedByButton = false;
+    let tempSelected = selectedValue;
+    selectedValue = 'track';
 
     searchValue = item.textContent.trim(); // 링크 텍스트를 검색어로 설정(소문자)
 
@@ -63,6 +64,7 @@ menuBtns.forEach((item) => {
     musicTitle.style.display = 'block';
 
     renderBySearch(); // 검색 결과 렌더링
+    selectedValue = tempSelected;
   });
 });
 

@@ -1,6 +1,6 @@
 // 주상우 : SDK Control
-const clientId = "33ad25dafa3f42e5b3909a3a813f8532";
-const clientSecret = "3a92a4a9a6724d5ea179d7553b0f4a59";
+const clientId = "b488526ffa804a92b41f45e03760d3ff";
+const clientSecret = "7cd6750d4a0a41eba283685a51292362";
 const redirectUri = "https://group-project-10.netlify.app";
 const authEndpoint = "https://accounts.spotify.com/authorize";
 const scopes = ["playlist-read-private", "playlist-read-collaborative", "user-read-playback-state", "user-modify-playback-state", "user-read-currently-playing", "streaming"];
@@ -609,9 +609,7 @@ searchInput.addEventListener("keyup", () => {
 
 // 검색 결과를 페이지별로 렌더링하고, 이전 결과를 유지하면서 새로운 결과를 추가하는 함수
 async function renderBySearch(page = 1) {
-  if (page === 1) {
     resultHTML = ""; // 첫 페이지일 경우 결과 HTML 초기화
-  }
 
   const resultInfo = result.map((item, i) => {
     const durationInMinutes = Math.floor(Number(item.duration_ms) / 1000 / 60);
@@ -622,14 +620,14 @@ async function renderBySearch(page = 1) {
       albumJacketUrl: `${selectedValue == 'track' ? item.album.images[1].url : item.images[1].url}`,
       songName: item.name,
       artist: `${selectedValue == 'artist' ? item.genres[0] : item.artists[0].name}`,
-      totalTime: `${(selectedValue == 'track' || isSearchedByButton) ? durationInMinutes + ":" + formattedSeconds : ''}`,
-      uri: `${(selectedValue == 'track' || isSearchedByButton) ? item.uri : ''}`,
+      totalTime: `${(selectedValue == 'track') ? durationInMinutes + ":" + formattedSeconds : ''}`,
+      uri: `${(selectedValue == 'track') ? item.uri : ''}`,
     };
   });
 
   // 각각의 item 렌더링
   resultInfo.forEach((item, i) => {
-    if (selectedValue == 'track' || isSearchedByButton) {
+    if (selectedValue == 'track') {
       console.log("앨범 x");
       resultHTML += `<div class="song-item" data-uri="${item.uri}"> 
                           <div class="song-info">
@@ -781,6 +779,8 @@ async function getDomesticTop(page = 1) {
   const top50Uri = '37i9dQZF1DWT9uTRZAYj0c';
   const newRlsUri = '37i9dQZF1DXe5W6diBL5N4';
   isSearchedByButton = true;
+  let tempSelected = selectedValue;
+  selectedValue = 'track';
 
   isLoading = true;
   buttonLoad.style.display = 'block';
@@ -810,12 +810,15 @@ async function getDomesticTop(page = 1) {
   musicTitle.textContent = 'TOP 50';
 
   renderBySearch();
+  selectedValue = tempSelected;
 }
 
 async function getNewRelease(page = 1) {
   const top50Uri = '37i9dQZF1DWT9uTRZAYj0c';
   const newRlsUri = '37i9dQZF1DXe5W6diBL5N4';
   isSearchedByButton = true;
+  let tempSelected = selectedValue;
+  selectedValue = 'track';
 
   isLoading = true;
   buttonLoad.style.display = 'block';
@@ -845,6 +848,7 @@ async function getNewRelease(page = 1) {
   musicTitle.textContent = 'New Release';
 
   renderBySearch();
+  selectedValue = tempSelected;
 }
 
 //돋보기 화면일 경우 클릭하면 검색창 아래로 전시
