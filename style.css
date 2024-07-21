@@ -204,7 +204,9 @@ img {
   height: 37px;
   background-color: transparent;
   font-size: 21px;
-  font-weight: 600; /* color:#4a3ab2; */
+  font-weight: 600;
+  transform: translateX(-8px);
+  /* color:#4a3ab2; */
 }
 .search input {
   padding-left: 10px;
@@ -615,13 +617,19 @@ img {
     justify-content: center;
     gap: 10px;
   }
+  #header .site-gnb .site-gnb-list .gnb-item{width:100%;}
   #header .site-gnb .site-gnb-list .gnb-item .dropdown button {
+    width: 100%;
     background-color: #333;
+    text-align: left;
   }
   #header .site-gnb .site-gnb-list,
   .search {
     justify-content: space-between;
   }
+  #header .site-gnb .site-gnb-list .gnb-item a{padding-right:20px;padding-left:20px;}
+  #header .site-gnb .site-gnb-list .gnb-item .dropdown{width:100%;}
+  #header .site-gnb .site-gnb-list{align-items: flex-start;}
   .nav-bar {
     display: block;
     position: absolute;
